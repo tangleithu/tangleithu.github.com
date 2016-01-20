@@ -1,0 +1,1220 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>点集的凸包问题 | tanglei&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="tanglei">
+    
+
+    
+    <meta name="description" content="凸的意思就是，点集当中任意两个点的连线仍然在这个集合当中。凸包就是说用一个足够大的橡皮筋把这些点包围住，这个最小的橡皮筋就构成了这些点集的凸包。
+求出凸包是计算几何当中一个经典的问题，也是贯穿这整个计算几何的学科。如下图所示，最外层的那个圈就是这些点集的凸包。凸包上的那些点称为极点，如果找出了所有的极点，那么，凸包也就求出来了。极点的可以用这种方式来进行判断，点集P中任意一个点s，如果存在另外的三">
+<meta property="og:type" content="article">
+<meta property="og:title" content="点集的凸包问题">
+<meta property="og:url" content="http://www.tanglei.name/convex-hull-of-points//index.html">
+<meta property="og:site_name" content="tanglei's blog">
+<meta property="og:description" content="凸的意思就是，点集当中任意两个点的连线仍然在这个集合当中。凸包就是说用一个足够大的橡皮筋把这些点包围住，这个最小的橡皮筋就构成了这些点集的凸包。
+求出凸包是计算几何当中一个经典的问题，也是贯穿这整个计算几何的学科。如下图所示，最外层的那个圈就是这些点集的凸包。凸包上的那些点称为极点，如果找出了所有的极点，那么，凸包也就求出来了。极点的可以用这种方式来进行判断，点集P中任意一个点s，如果存在另外的三">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_1.png">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_2.png">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_3.png">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_4.png">
+<meta property="og:updated_time" content="2016-01-14T15:57:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="点集的凸包问题">
+<meta name="twitter:description" content="凸的意思就是，点集当中任意两个点的连线仍然在这个集合当中。凸包就是说用一个足够大的橡皮筋把这些点包围住，这个最小的橡皮筋就构成了这些点集的凸包。
+求出凸包是计算几何当中一个经典的问题，也是贯穿这整个计算几何的学科。如下图所示，最外层的那个圈就是这些点集的凸包。凸包上的那些点称为极点，如果找出了所有的极点，那么，凸包也就求出来了。极点的可以用这种方式来进行判断，点集P中任意一个点s，如果存在另外的三">
+
+    
+    <link rel="alternative" href="/atom.xml" title="tanglei&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="tanglei&#39;s blog" title="tanglei&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tanglei&#39;s blog">tanglei&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.tanglei.name">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="//convex-hull-of-points//" title="点集的凸包问题" itemprop="url">点集的凸包问题</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="tanglei" target="_blank" itemprop="author">tanglei</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-28T15:06:07.000Z" itemprop="datePublished"> 發表於 2013-03-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			
+		
+		</div>
+		
+		<p>凸的意思就是，点集当中任意两个点的连线仍然在这个集合当中。凸包就是说用一个足够大的橡皮筋把这些点包围住，这个最小的橡皮筋就构成了这些点集的凸包。</p>
+<p>求出凸包是计算几何当中一个经典的问题，也是贯穿这整个计算几何的学科。如下图所示，最外层的那个圈就是这些点集的凸包。凸包上的那些点称为极点，如果找出了所有的极点，那么，凸包也就求出来了。极点的可以用这种方式来进行判断，点集P中任意一个点s，如果存在另外的三个不同的点p,q,r构成的三角形将s包围住，那么这个点s就不是极点，反之就是极点。于是也就有了第一个算法：</p>
+<p><img src="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_1.png" alt="凸包" align="left"><br></p>
+<pre>&lt;cc class="pascal">
+Mark All points in Set P as extreme;
+For each triangle (p,q,r):
+        For each k in Set P and k ! = (p,q,r):
+            If k in triangle(p,q,r)
+               Mark k as NON-extreme.
+&lt;/cc></pre>
+
+<p>判断一个点k是否在点p,q,r构成的三角形中可以用toleft测试。如上图中的例子，如果k在有向线段pq的左边 and k 在 qr的左边and k在rp的左边，那么k就在pqr构成的的三角形里面了。核心代码如下：</p>
+<pre>&lt;cc class="cpp">
+ //O(n^4)
+    vector&lt;CP_Vector2D> cal_extreme_points()
+    {
+        vector&lt;CP_Vector2D> extreme_points;
+        vector&lt;MyPoint> my_points;
+        unsigned int size = points.size();
+        //inital all points to extreme
+        for (unsigned int i = 0; i &lt; size; i++)
+            my_points.push_back(MyPoint(points[i], true));
+
+        for (unsigned int p = 0; p &lt; size; p++)
+        {
+            for (unsigned int q = p+1 ; q &lt; size; q++)
+            {
+                for (unsigned int r = q+1; r &lt; size; r++)
+                {
+                    for (unsigned int k = 0; k &lt; size; k++)
+                    {
+                        if (k == p || k == q || k == r || !my_points[k].isExtreme) 
+                            continue;
+                        if (in_triangle(my_points[k].point, my_points[p].point, my_points[q].point, my_points[r].point))
+                            my_points[k].isExtreme = false;
+                    }
+                }
+            }
+        }
+
+        for (unsigned int i = 0; i &lt; size; i++)
+        {
+            if(my_points[i].isExtreme)
+                extreme_points.push_back(my_points[i].point);
+        }
+        //sort the extrme_points
+        sort(extreme_points.begin(), extreme_points.end(), compare);
+        leftest_and_lowest = extreme_points[0];
+        //sort the extrme_points by left_and_lowest polar
+        sort(extreme_points.begin()+1, extreme_points.end(), compareByAngle);
+        return extreme_points;
+    }
+&lt;/cc></pre>
+
+<p>这是一个O(n<sup>4</sup>)的算法，找出所有极点之后，还得用O(nlgn)排一下序将所有的极点连接起来(可以按照极点与最左下角的点和沿水平X轴的夹角排序)。</p>
+<p>稍微有些改进的方法是找出所有的极边(构成凸包的多边形的每一条边都是极边)，可以这么来计算极边，除了极边两个点外，其他的点都在这个边的同一侧。如下算法：</p>
+<pre>&lt;cc class="pascal">
+let EE = null
+for each directed segment pq
+if points in P\{p,q} lie to the SAME side of pq then let EE = EE+{pq}
+&lt;/cc></pre>
+
+<p>找出所有的极边需要<a name="OLE_LINK1"></a>O(n<sup>3</sup>)，然后再连接起来，整个算法复杂度为O(n<sup>3</sup>).</p>
+<pre>&lt;cc class="cpp">
+//O(n^3)
+    vector&lt;CP_Vector2D> cal_extreme_edges()
+    {
+        vector&lt;ExtremeEdge> edgs;
+
+        unsigned int size = points.size();
+
+        for (unsigned int p = 0; p &lt; size; p++)
+        {
+            for (unsigned int q = p+1 ; q &lt; size; q++)
+            {
+                bool all_left = true, all_right = true;
+                for (unsigned int k = 0; k &lt; size; k++)
+                {
+                    if (k == p || k == q || p == q)
+                        continue;
+                    if(to_left(points[k], points[p], points[q]))
+                        all_left = false;
+                    else
+                        all_right = false;
+                }
+                //let the direction be all the same
+                if (all_left)
+                    edgs.push_back(ExtremeEdge(points[p], points[q]));
+                if (all_right)
+                    edgs.push_back(ExtremeEdge(points[q], points[p]));
+            }
+        }
+
+        vector&lt;CP_Vector2D> convexPoints;
+
+        ////O(n^2), should better sort the edges by angle.
+        //convexPoints.push_back(edgs[0].end);
+        //while(convexPoints.size() != edgs.size())
+        //{
+        //    for (unsigned int i = 0; i &lt; edgs.size(); i++)
+        //    {
+        //        if (convexPoints[convexPoints.size() - 1] == edgs[i].start)
+        //            convexPoints.push_back(edgs[i].end);
+        //    }
+        //}
+
+        //O(nlogn)
+        sort(edgs.begin(), edgs.end(), compareEdgeByAngle);
+        for (unsigned int i=0; i &lt; edgs.size(); i++)
+        {
+            convexPoints.push_back(edgs[i].start);
+        }
+
+        return convexPoints;
+    }
+&lt;/cc></pre>
+
+<p>再说一下<span style="font-size: 10pt;">Gift Wrapping算法</span>，算法思路如下：因为所有的极边都通过端点连接而成围成一个圈，一旦找到第一条极边，可以通过利用O(n)搜索剩下的点构成接下来的极边，圈围成后，凸包即计算出来。整个算法复杂度O(n<sup>2</sup>)。其中第一个点可以通过O(n)的时间找到最左下角的点。就像其名字一样，整个算法就像在包装gift。</p>
+<pre>&lt;cc class="pascal">
+find an arbitrary EP, denoted as p0
+let i = 0
+repeat
+ find the EE pipi+1
+ i++
+until pi = p0
+&lt;/cc></pre>
+
+<p>分析下GiftWrapping算法，每条极边的确定需要O(N)的时间，算法所耗费的时间依赖与极边的数量，因此GiftWrapping算法在最坏的情况下需要O(n<sup>2</sup>)，最好的情况下仅仅需要O(N)，更确切地讲，需要O(n*h)，h是凸包包含的点数量，这个算法是一个output sensitive的算法。</p>
+<pre>&lt;cc class="cpp">
+//O(n^2),in fact O(n*h),h = convex hull.size, output sensitive
+    vector&lt;CP_Vector2D> giftwraping()
+    {
+        int ltl = 0;//find the lowest-and-leftmost point
+        for (unsigned int i = 1; i &lt; points.size(); i++)
+        {
+            if(points[i].m_y &lt; points[ltl].m_y || 
+               (points[i].m_y == points[ltl].m_y &#038;&#038; points[i].m_x &lt; points[ltl].m_x))
+               ltl = i;
+        }
+        vector&lt;CP_Vector2D> convexPoints;
+        convexPoints.push_back(points[ltl]);
+        for(int p = ltl; ;)
+        {
+            int q = -1;
+            for(unsigned int k = 0; k &lt; points.size(); k++)
+            {
+                if( (k != p) &#038;&#038;  (q &lt; 0 || !to_left(points[k], points[p], points[q])))
+                    q = k;//update q if k lies in right of pq
+            }
+            if(ltl == q)
+                break;// has find out the convex hull circle
+            //find q
+            convexPoints.push_back(points[q]);
+            p = q;
+        }
+         return convexPoints;
+    }
+&lt;/cc></pre>
+
+<p>是否能够继续优化下去，将算法复杂度再次提高？或者Convex Hull的解法是否有一个下界?下面的算法就是一个总体复杂度O(nlgn)的算法，已经有人证明，这个是凸包问题的下界。不能再继续优化了。下面就看看著名的O(nlgn)的Graham Scan算法。</p>
+<p><img src="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_2.png" alt=""><img src="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_3.png" alt=""></p>
+<p>算法思路如下：首先仍然是找到最左下角的点，然后按照极角排序，如上图所示，编上号1——n，然后从第三个点开始，依次看该点是否在前两个点构成的直线的左边(3是否在有向线段12的左边,4是否在有向线段23的左边，依次类推),上例中，到第5个点时，发现5不在34的左边，则回退一个，连接35，到第6个点时，发现6也不在前两个点35(此时4已经被排除)构成的有向线段的左边,再回退，看6仍然不在23的左边，继续回退，直到发现6在12的左边，此时连接26……就按照这样走下去，完成了整个凸包的构成。从具体实现上可以用两个栈来实现，算法如下所示：</p>
+<pre>&lt;cc class="pascal">
+find the LTL point p1
+sort all points w.r.t. p1 by polar angle: {p2, p3, ..., pn}
+create stack S; S.push(p1) and S.push(p2)
+create stack T; for i = n down to 3 do T.push(pi)
+while (!T.empty()) do
+   while (!toLeft(S[1], S[0], T[0])) do
+        S.pop() 
+   S.push(T.pop())
+&lt;/cc></pre>
+
+<p>最后S中的点就是凸包上的极点，并且是有序的。注意上述算法中，每一个从S中pop出来的点都不是极点，因为会被其他三角形包围住。而所有的点都会在p1和p2的左边。这个代码用stl的stack有些别扭啊。因为stack不能直接查看栈顶的第二个元素&#8230;.不要紧，意思意思即可。:)</p>
+<pre>&lt;cc class="cpp">
+ //O(nlgn)
+    vector&lt;CP_Vector2D> graham_scan()
+    {
+        int ltl = 0;//find the lowest-and-leftmost point
+        for (unsigned int i = 1; i &lt; points.size(); i++)
+        {
+            if(points[i].m_y &lt; points[ltl].m_y || 
+                (points[i].m_y == points[ltl].m_y &#038;&#038; points[i].m_x &lt; points[ltl].m_x))
+                ltl = i;
+        }
+
+        leftest_and_lowest = points[ltl];
+        //compareByAngle should use the ltl point
+        sort(points.begin(), points.end(), compareByAngle);
+
+        vector&lt;CP_Vector2D> convexPoints;
+        stack&lt;CP_Vector2D> S, T;
+        S.push(points[0]);S.push(points[1]);
+        for (int i = points.size()-1; i >= 2;i--)
+        {
+            T.push(points[i]);
+        }
+        CP_Vector2D s0, s1;
+        while (!T.empty())
+        {
+            s0 = S.top();
+            S.pop();//s0 is gone
+            if(S.empty())
+            {
+                S.push(T.top());
+                break;
+            }
+            s1 = S.top();//get s1
+            S.push(s0);
+            while (!to_left(T.top(), s1, s0))
+            { 
+                S.pop(); 
+                s0 = S.top();
+                S.pop();//s0 is gone
+                s1 = S.top();//get s1
+                S.push(s0);
+            }
+            S.push(T.top());
+            T.pop();
+        }
+        int size = S.size();
+        for(int i = 0; i &lt; size; i++)
+        {
+            convexPoints.push_back(S.top());
+            S.pop();//size is change, cannot use i &lt; S.size()
+        }
+        return convexPoints;
+    }
+&lt;/cc></pre>
+
+<p>来分析下这个算法的复杂度。刚开始用O(N)的时间找p1，然后排序O(nlgn),最复杂的就是这个Scan，表面上看有两层while循环，仔细分析发现：toleft测试的数量=T.pop+s.push =O(N),而每一次toleft测试，总有一个点会从S或者T中pop出来，每个点从S中push进去一次且最多被pop出来一次。因此，整个while循环那里实际只耗费了O(N)。所以整个算法复杂度就是O(nlgn)。</p>
+<p>最后自己实现了下以上几个算法，用MFC+OPENGL如图。注意实现时细节的处理，比如按照极角排序等，若考虑算法鲁棒性，得处理多点共线、重点等情况(本文未考虑)。</p>
+<p><img src="http://www.tanglei.name/wp-content/uploads/2013/03/032813_1505_4.png" alt=""></p>
+<p>参考资料：<a href="http://www.csai.tsinghua.edu.cn/iar/members/dengjunhui_en.htm" target="_blank" rel="external">邓俊辉</a> 《计算几何》</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/计算机图形学/">计算机图形学</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/GiftWrapping/">GiftWrapping</a><a href="/tags/Graham-Scan/">Graham Scan</a><a href="/tags/凸包/">凸包</a><a href="/tags/计算几何/">计算几何</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.tanglei.name//convex-hull-of-points//" data-title="点集的凸包问题 | tanglei&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="//change-ubuntuserver-to-support-wordpress//" title="换主机风波-ubuntu配置wordpress">
+  <strong>上一篇：</strong><br/>
+  <span>
+  换主机风波-ubuntu配置wordpress</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="//life-of-march-in-2013//"  title="近况——学习,生活,工作">
+ <strong>下一篇：</strong><br/> 
+ <span>近况——学习,生活,工作
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/JAVA/" title="JAVA">JAVA<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/" title="Linux&amp;amp;Ubuntu">Linux&amp;amp;Ubuntu<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/" title="MyLife">MyLife<sup>76</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife-清华大学/" title="MyLife 清华大学">MyLife 清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mylife-旅游/" title="Mylife 旅游">Mylife 旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/" title="PHP">PHP<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/" title="PHP">PHP<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/" title="Windows">Windows<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/" title="Windows">Windows<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c++">c++<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/coding小工具/" title="coding小工具">coding小工具<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/" title="coding小工具">coding小工具<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/" title="wordpress">wordpress<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/" title="业界动态">业界动态<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/" title="业界动态">业界动态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/" title="名人名事">名人名事<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>37</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/开开眼界/" title="开开眼界">开开眼界<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/" title="开开眼界">开开眼界<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/" title="我不会算法">我不会算法<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/" title="我不会算法">我不会算法<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/我做站长/" title="我做站长">我做站长<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/" title="我做站长">我做站长<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/" title="数据库应用">数据库应用<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/" title="数据挖掘">数据挖掘<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/" title="敲敲代码">敲敲代码<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码-Scala-工作那些事儿/" title="敲敲代码 Scala 工作那些事儿">敲敲代码 Scala 工作那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/旅游/" title="旅游">旅游<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/旅游/" title="旅游">旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/清华大学/" title="清华大学">清华大学<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/清华大学/" title="清华大学">清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/玩玩手机/" title="玩玩手机">玩玩手机<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/经验技巧/" title="经验技巧">经验技巧<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/经验技巧/" title="经验技巧">经验技巧<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/经验技巧/" title="经验技巧">经验技巧<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/经验技巧/" title="经验技巧">经验技巧<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/" title="经验技巧">经验技巧<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧-我做站长-wordpress/" title="经验技巧 我做站长 wordpress">经验技巧 我做站长 wordpress<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/" title="网络文摘">网络文摘<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/网络文摘/" title="网络文摘">网络文摘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机图形学/" title="计算机图形学">计算机图形学<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/贵州支教行/" title="贵州支教行">贵州支教行<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件0804/" title="软件0804">软件0804<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件0804/" title="软件0804">软件0804<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件体系结构/" title="软件体系结构">软件体系结构<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件学院/" title="软件学院">软件学院<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件学院/" title="软件学院">软件学院<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件配置管理/" title="软件配置管理">软件配置管理<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件配置管理/" title="软件配置管理">软件配置管理<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件项目管理/" title="软件项目管理">软件项目管理<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软考/" title="软考">软考<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/软考/" title="软考">软考<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软考/" title="软考">软考<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/旅游/" title="旅游">旅游<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/中南大学/" title="中南大学">中南大学<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/保研/" title="保研">保研<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/丰田助学/" title="丰田助学">丰田助学<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/电子商务/" title="电子商务">电子商务<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/贵州支教/" title="贵州支教">贵州支教<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/软件度量/" title="软件度量">软件度量<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习生/" title="腾讯实习生">腾讯实习生<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/龙场镇/" title="龙场镇">龙场镇<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/铜厂小学/" title="铜厂小学">铜厂小学<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习日志/" title="腾讯实习日志">腾讯实习日志<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ZOJ/" title="ZOJ">ZOJ<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PAT/" title="PAT">PAT<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机复试/" title="计算机复试">计算机复试<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/宋庆龄基金会/" title="宋庆龄基金会">宋庆龄基金会<sup>8</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="tanglei">tanglei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

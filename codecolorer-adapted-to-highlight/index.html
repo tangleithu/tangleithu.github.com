@@ -1,0 +1,1006 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>将代码高亮插件codecolorer替换为highlight | tanglei&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="tanglei">
+    
+
+    
+    <meta name="description" content="最近在写一个wordpress小的客户端发布工具，就是直接写markdown，然后转为html发布到wordpress，为什么要写?
+
+不太想换之前已有的blogs，试过相应的工具将已有的wordpress blog转为markdown，效果不是很好。//直接用github+jekyll之类的静态站点
+wordpress已有的支持markdown的插件貌似都不怎么理想，想兼容之前的比较麻烦，特别是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将代码高亮插件codecolorer替换为highlight">
+<meta property="og:url" content="http://www.tanglei.name/codecolorer-adapted-to-highlight/index.html">
+<meta property="og:site_name" content="tanglei's blog">
+<meta property="og:description" content="最近在写一个wordpress小的客户端发布工具，就是直接写markdown，然后转为html发布到wordpress，为什么要写?
+
+不太想换之前已有的blogs，试过相应的工具将已有的wordpress blog转为markdown，效果不是很好。//直接用github+jekyll之类的静态站点
+wordpress已有的支持markdown的插件貌似都不怎么理想，想兼容之前的比较麻烦，特别是">
+<meta property="og:updated_time" content="2016-01-16T03:50:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="将代码高亮插件codecolorer替换为highlight">
+<meta name="twitter:description" content="最近在写一个wordpress小的客户端发布工具，就是直接写markdown，然后转为html发布到wordpress，为什么要写?
+
+不太想换之前已有的blogs，试过相应的工具将已有的wordpress blog转为markdown，效果不是很好。//直接用github+jekyll之类的静态站点
+wordpress已有的支持markdown的插件貌似都不怎么理想，想兼容之前的比较麻烦，特别是">
+
+    
+    <link rel="alternative" href="/atom.xml" title="tanglei&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="tanglei&#39;s blog" title="tanglei&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tanglei&#39;s blog">tanglei&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.tanglei.name">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/codecolorer-adapted-to-highlight/" title="将代码高亮插件codecolorer替换为highlight" itemprop="url">将代码高亮插件codecolorer替换为highlight</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="tanglei" target="_blank" itemprop="author">tanglei</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-20T15:28:37.000Z" itemprop="datePublished"> 發表於 2016-01-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			
+		
+		</div>
+		
+		<p>最近在写一个wordpress小的客户端发布工具，就是直接写markdown，然后转为html发布到wordpress，为什么要写?</p>
+<ul>
+<li>不太想换之前已有的blogs，试过相应的工具将已有的wordpress blog转为markdown，效果不是很好。//直接用github+jekyll之类的静态站点</li>
+<li>wordpress已有的支持markdown的插件貌似都不怎么理想，想兼容之前的比较麻烦，特别是用了代码高亮之类的插件//用wordpress已有的支持markdown的插件</li>
+</ul>
+<p>所以就写了，目前的技术方案是：<br><figure class="highlight"><figcaption><span>server```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#36825;&#26679;&#30340;&#22909;&#22788;&#26159;&#65306;&#10;&#10;- &#20165;&#20165;&#35201;&#23545;&#24050;&#26377;&#30340;blog&#36827;&#34892;&#32454;&#23567;&#30340;&#25913;&#21160;&#21363;&#21487;&#65292;&#21363;&#25913;&#19979;&#37027;&#20123;po&#20102;&#20195;&#30721;&#30340;&#25991;&#31456;&#65307;&#10;- &#26412;&#22320;&#30340;markdown&#26041;&#20415;&#31649;&#29702;&#21644;&#22791;&#20221;&#65292;&#20063;&#26041;&#20415;&#29983;&#25104;&#20854;&#20182;&#22914;pdf&#31561;&#26684;&#24335;&#65307;&#10;- win&#19979;&#20043;&#21069;&#36824;&#26377;wlw&#24037;&#20855;&#26041;&#20415;&#21457;&#24067;&#24102;&#26377;&#22270;&#29255;&#30340;blog&#65292;&#20294;&#22312;mac&#12289;linux&#19979;&#25214;&#19981;&#21040;&#30456;&#24212;&#26041;&#20415;&#30340;&#24037;&#20855;&#65292;&#29616;&#22312;&#29992;&#36825;&#20010;&#32479;&#19968;&#30340;client&#23601;&#27604;&#36739;&#26041;&#20415;&#20256;&#22270;&#29255;&#31561;&#36164;&#28304;&#12290;&#10;&#10;&#10;&#26412;&#31687;&#25991;&#31456;&#26159;&#35752;&#35770;&#35299;&#20915;&#20043;&#21069;&#25991;&#31456;&#20195;&#30721;&#39640;&#20142;&#30340;&#38382;&#39064;&#12290;&#19968;&#26041;&#38754;&#65292;&#29616;&#22312;&#30340;&#20195;&#30721;&#39640;&#20142;&#26159;&#22522;&#20110;pandoc&#30340;&#65292;pandoc&#20250;&#25226;&#20195;&#30721;&#25286;&#20998;&#28155;&#21152;&#21508;&#31181;tag&#65292;&#28982;&#21518;&#26681;&#25454;tag&#21435;css&#65292;&#19988;&#29983;&#25104;&#30340;html&#26159;&#19982;&#20043;&#21069;&#30340;codecolorer&#19981;&#20860;&#23481;&#30340;&#65292;&#24320;&#21551;codecolorer&#25554;&#20214;&#21518;&#65292;&#29616;&#22312;&#30340;&#25991;&#31456;&#20081;&#24471;&#19968;&#22604;&#31946;&#28034;&#65307;&#10;&#21478;&#22806;&#19968;&#26041;&#38754;&#65292;&#20851;&#38381;codecolorer&#21518;&#65292;&#30001;&#20110;&#29616;&#22312;&#30340;&#25991;&#31456;&#20195;&#30721;&#24050;&#32463;&#19981;&#26159;&#29420;&#31435;&#30340;&#20195;&#30721;&#65292;&#26159;&#24102;&#26377;&#21508;&#31181;html&#26631;&#31614;&#30340;&#25991;&#26412;&#65292;&#35299;&#20915;&#26041;&#26696;&#26159;&#23558;&#20043;&#21069;&#30340;&#25152;&#26377;post&#20013;&#21547;&#26377;&#30340;&#20195;&#30721;&#37117;&#29992;pandoc&#36716;&#25442;&#19968;&#19979;&#65292;&#36825;&#20010;&#25104;&#26412;&#22826;&#39640;&#65307;&#21518;&#26469;&#25214;&#21040;&#19968;&#20010;&#20195;&#30721;&#39640;&#20142;&#30340;&#25554;&#20214;&#21487;&#20197;&#33258;&#23450;&#20041;&#20195;&#30721;&#21306;&#22495;&#30340;&#26631;&#31614;&#65292;&#19988;&#26159;&#36890;&#36807;&#21069;&#31471;&#23454;&#29616;&#30340;&#65292;&#19981;&#21344;&#29992;&#26381;&#21153;&#22120;&#36164;&#28304;&#65292;&#20110;&#26159;&#23601;&#37319;&#29992;&#20102;&#36825;&#27454;&#25554;&#20214;[hightlight](https://highlightjs.org/)&#12290;&#10;&#10;&#10;codecolorer&#20043;&#21069;&#30340;&#20195;&#30721;&#21306;&#22495;&#22522;&#26412;&#19978;&#37117;&#26159;&#36890;&#36807;```[cc lang=&#34;java&#34;]java code[/cc]```&#23454;&#29616;&#30340;&#65292;hightlight&#21487;&#20197;&#33258;&#23450;&#20041;html&#26631;&#31614;&#65292;&#10;&#25152;&#20197;&#22823;&#33268;&#21482;&#38656;&#35201;&#23558;&#21407;&#26469;&#30340;&#25991;&#31456;&#20013;&#25152;&#26377;&#30340;```[cc]``` &#26367;&#25442;&#25104;```&#60;cc&#62;```&#21363;&#21487;&#65292;&#19981;&#33021;&#29992;hightlight&#40664;&#35748;&#30340;```&#60;pre&#62;&#60;code&#62;&#60;/code&#62;&#60;pre&#62;```&#65292;&#36825;&#20010;&#21448;&#20250;&#36319;pandoc&#30340;&#20914;&#31361;(&#20854;&#23454;&#20063;&#21487;&#20197;&#65292;&#21518;&#38754;&#20250;&#35828;&#24590;&#20040;&#33258;&#23450;&#20041;&#35753;&#21738;&#20123;&#25991;&#31456;&#21551;&#29992;highlight)&#12290;&#10;&#10;&#22312;&#23558;&#20195;&#30721;&#39640;&#20142;&#25554;&#20214;codecolorer&#26367;&#25442;&#20026;highlight&#36807;&#31243;&#20013;&#65292;&#36935;&#21040;&#30340;&#20027;&#35201;&#38382;&#39064;&#26159;&#65306;&#10;&#10;- codecolorer&#20043;&#21069;&#30340;&#20195;&#30721;&#21306;&#22495;&#20165;&#29992;```[cc]```&#26631;&#31614;&#21253;&#22260;&#65292;highlight&#33258;&#23450;&#20041;&#26631;&#31614;&#26102;&#65292;&#25442;&#34892;&#31526;&#20250;&#20986;&#29616;&#38382;&#39064;&#12290;```hljs.configure(&#123;useBR: true&#125;);``` &#19981;&#29983;&#25928;&#65292;&#21442;&#35265;[hightligth&#35752;&#35770;](https://github.com/isagalaev/highlight.js/issues/860)&#65292;&#32467;&#26524;&#26159;&#35201;&#27714;code&#20013;&#38656;&#35201;&#21253;&#21547;```&#60;br&#62;```&#26631;&#31614;&#65292;&#36825;&#19981;&#25199;&#20040;&#12290;&#12290;&#12290;&#35299;&#20915;&#26041;&#27861;&#26159;&#25163;&#21160;&#36890;&#36807;js&#28155;&#21152;```&#60;br&#62;```&#12290;&#10;- &#25442;&#34892;&#31526;&#38382;&#39064;&#35299;&#20915;&#20102;&#65292;&#20195;&#30721;&#32553;&#36827;&#26377;&#20986;&#29616;&#38382;&#39064;&#20102;&#12290;&#22247;&#12290;&#21518;&#26469;&#24819;&#24819;&#36824;&#26159;&#25163;&#21160;&#22312;```&#60;cc&#62;```&#21608;&#22260;&#28155;&#21152;```&#60;pre&#62;```&#21543;&#12290; //&#27880;&#24847;&#22312;&#21069;&#31471;&#21152;&#26102;```&#60;cc&#62;```&#21306;&#22495;&#20013;&#38388;&#30340;&#20869;&#23481;&#20250;&#34987;wordpress &#32473;&#28155;&#21152;&#19968;&#20123;```&#60;br/&#62;&#60;p&#62;```&#20043;&#31867;&#30340;&#26631;&#31614;&#20999;&#36825;&#20010;&#26631;&#31614;&#21487;&#33021;&#20250;&#28155;&#21152;&#24471;&#19981;&#21512;&#29702;&#27604;&#22914;&#20195;&#30721;&#30340;&#19968;&#37096;&#20998;&#21644;&#20195;&#30721;&#20197;&#19978;&#30340;&#25991;&#23383;&#22312;&#19968;&#20010;p&#37324;&#38754;&#65292;&#20250;&#23548;&#33268;&#36873;&#25321;&#22120;&#36873;&#25321;cc&#19981;&#33021;&#20840;&#37096;&#36873;&#21040;&#65292;&#36825;&#20010;&#31105;&#29992;&#21363;&#21487;(&#36825;&#26679;&#21487;&#33021;&#23548;&#33268;&#20043;&#21069;&#30340;&#25991;&#31456;&#25490;&#29256;&#19981;&#22826;&#27491;&#30830;)&#65292;&#26041;&#27861;&#26159;&#20027;&#39064;&#20013;```the_content(&#39;Continue reading &#38;raquo;&#39;);```&#26367;&#25442;&#20026;```echo $post-&#62;post_content;```&#12290;&#22312;&#21518;&#31471;&#21363;&#25968;&#25454;&#24211;&#31471;&#21152;&#23601;&#19981;&#29992;&#31649;&#12290;&#25152;&#20197;&#36824;&#26159;&#30452;&#25509;&#25968;&#25454;&#24211;&#28155;&#21152;&#36739;&#22909;&#12290;&#10;&#10;&#10;&#20195;&#30721;&#22914;&#19979;:&#10;&#10;```javascript&#10;&#60;link rel=&#34;stylesheet&#34; href=&#34;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css&#34;&#62;&#10;&#60;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js&#34;&#62;&#60;/script&#62;&#10;&#60;script src=&#34;http://code.jquery.com/jquery-2.1.4.min.js&#34;&#62;&#60;/script&#62;&#10;&#60;script&#62;&#10;   if(false)&#10;       hljs.initHighlightingOnLoad(); //default tag&#60;pre&#62;&#60;code&#62;&#10;   else&#10;   &#9;$(document).ready(function() &#123;&#10;       //hljs.configure(&#123;useBR: true&#125;);//this does NOT work, the original code should contains &#60;br&#62;, &#10;       //see https://github.com/isagalaev/highlight.js/issues/860&#10;       //$(&#39;cc&#39;).each(function()&#123;&#10;       //    $(this).wrap(&#34;&#60;pre&#62;&#60;/pre&#62;&#34;); //db substitute&#10;           //var codestr = $(this).html();&#10;           //$(this).html(codestr.replace(/\n/g, &#39;&#60;br&#62;&#39;)); //manually substitute, add &#60;pre&#62;, no need&#10;       //&#125;);&#10;       $(&#39;pre cc&#39;).each(function(i, block) &#123;&#10;           hljs.highlightBlock(block);&#10;       &#125;);&#10;   &#125;);&#10;&#60;/script&#62;</span><br></pre></td></tr></table></figure></p>
+<p>Demo 见<a href="/./codecolorer-adapted-to-highlight/highlighttest.html">这里</a>。</p>
+<p>然后就是使这些js代码应用到之前的所有文章中，直接添加到每篇含有代码的文章中的正文里容易被wordpress过滤转义掉，且加载的顺序不正确也会导致代码高亮出现问题，如果加在全站的header中有造成不必要的浪费，幸好wordpress提供了给每篇文章自定义的功能，wordpress后台发布文章时有个自定义栏目，可以给每篇文章加个标签，然后wp加载的时候根据这篇文章的标签采用不同的逻辑加载。方法可以参考<a href="http://loo2k.com/blog/wordpress-page-javascript-css-code/" target="_blank" rel="external">在 WordPress 指定页面加载指定 JavaScript 或 CSS 代码</a>[^1]</p>
+<p>最后就是修改那些含有代码的文章，修改<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#33258;&#23450;&#20041;&#26465;&#30446;&#65306;enable_highlight&#10;&#20540;&#65306;&#10;&#10;```html&#10;&#60;link rel=&#34;stylesheet&#34; href=&#34;../wp-content/blogresources/highlightconfig/highlight.default.min.css&#34;&#62;&#10;&#60;script src=&#34;../wp-content/blogresources/highlightconfig/jquery-2.1.4.min.js&#34;&#62;&#60;/script&#62;&#10;&#60;script src=&#34;../wp-content/blogresources/highlightconfig/enable_highlight.js&#34;&#62;&#60;/script&#62;</span><br></pre></td></tr></table></figure></p>
+<p>主题的header.php文件中，<figure class="highlight"><figcaption><span>wp_head(); ?>```之后添加如下代码进行过滤：</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;```php&#10;&#60;?php if (is_single() || is_page()) &#123;&#10;    $head = get_post_meta($post-&#62;ID, &#39;enable_highlight&#39;, true); &#10;    if (!empty($head)) &#123; ?&#62; &#10;        &#60;?php echo $head; ?&#62; &#10;&#60;?php &#125; &#125; ?&#62;</span><br></pre></td></tr></table></figure></p>
+<p>其实可以优化下，不用jQuery的，懒得搞了。</p>
+<p>呃，每篇文章都得单独添加一个wp_postmeta。<br>mysql replace没有正则匹配，一个一个来了。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[/cc]'</span>, <span class="string">'&lt;/cc&gt;&lt;/pre&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">(<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[/cc]%'</span>);</span></span><br></pre></td></tr></table></figure>
+<p>当试图用以上sql进行查询更新时，提示 “You can’t specify target table ‘wp_posts’ for update in FROM clause”，因为这样对同一个表操作会冲突，中间加一个临时表解决问题。[^2]</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[/cc]'</span>, <span class="string">'&lt;/cc&gt;&lt;/pre&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">(<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[/cc]%'</span>) <span class="keyword">as</span> tmp);</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="python"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="python"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="python"]%'</span>) <span class="keyword">as</span> tmp);</span>  <span class="comment">/*8 rows*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="php"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="php"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="php"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*8 rows*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="cpp"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="cpp"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="cpp"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*6*/</span> </span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="java"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="java"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="java"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*16*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="c#"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="csharp"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> </span><br><span class="line"><span class="keyword">in</span> ( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="c#"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*4*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="c++"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="cpp"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="c++"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*6*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="html"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="html"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> </span><br><span class="line"><span class="keyword">in</span> ( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="html"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*1*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="xml"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="xml"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> </span><br><span class="line"><span class="keyword">in</span> ( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="xml"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*5*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="C"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="C"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="C"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*10*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[/cc]'</span>, <span class="string">'&lt;/cc&gt;&lt;/pre&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[/cc]%'</span>) <span class="keyword">as</span> tmp);</span> </span><br><span class="line"><span class="comment">/*66*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'&lt;code'</span>, <span class="string">'&lt;pre&gt;&lt;cc'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%&lt;code%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*11*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'&lt;/code&gt;'</span>, <span class="string">'&lt;/cc&gt;&lt;/pre&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%&lt;/code&gt;%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*11*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="sql"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="sql"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="sql"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*5*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="c"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="c"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> </span><br><span class="line"><span class="keyword">in</span> ( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="c"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*4*/</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">'[cc lang="javascript"]'</span>, <span class="string">'&lt;pre&gt;&lt;cc class="javascript"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> </span><br><span class="line"><span class="keyword">in</span> ( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">'%[cc lang="javascript"]%'</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*2*/</span></span><br><span class="line"> </span><br><span class="line"><span class="operator"><span class="keyword">UPDATE</span> wp_posts <span class="keyword">SET</span> post_content = <span class="keyword">REPLACE</span>( post_content, <span class="string">"[cc lang='python']"</span>, <span class="string">'&lt;pre&gt;&lt;cc class="python"&gt;'</span> ) <span class="keyword">where</span> <span class="keyword">ID</span> <span class="keyword">in</span> </span><br><span class="line">( <span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> post_content <span class="keyword">LIKE</span> <span class="string">"%[cc lang='python']%"</span>) <span class="keyword">as</span> tmp);</span> <span class="comment">/*2*/</span></span><br><span class="line"> </span><br><span class="line"><span class="operator"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> wp_postmeta (post_id, meta_key, meta_value) </span><br><span class="line"><span class="keyword">SELECT</span> wp_posts.<span class="keyword">ID</span>, <span class="string">'enable_highlight'</span>, </span><br><span class="line"><span class="string">'&lt;link rel="stylesheet" href="../wp-content/blogresources/highlightconfig/highlight.default.min.css"&gt;</span><br><span class="line">&lt;script src="../wp-content/blogresources/highlightconfig/jquery-2.1.4.min.js"&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src="../wp-content/blogresources/highlightconfig/enable_highlight.js"&gt;&lt;/script&gt;'</span> </span><br><span class="line"><span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> wp_posts.<span class="keyword">ID</span> <span class="keyword">in</span> (<span class="keyword">SELECT</span> <span class="keyword">ID</span> <span class="keyword">FROM</span> wp_posts <span class="keyword">WHERE</span> wp_posts.post_content <span class="keyword">LIKE</span> <span class="string">'%&lt;/cc&gt;&lt;/pre&gt;%'</span>);</span></span><br></pre></td></tr></table></figure>
+<p>参考文献：</p>
+<p>[^1]: <a href="http://loo2k.com/blog/wordpress-page-javascript-css-code/" target="_blank" rel="external">在 WordPress 指定页面加载指定 JavaScript 或 CSS 代码</a><br>[^2]: <a href="http://stackoverflow.com/questions/8333376/mysql-1093-you-cant-specify-target-table-giveaways-for-update-in-from-clau" target="_blank" rel="external">MySQL #1093 - You can’t specify target table ‘giveaways’ for update in FROM clause</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/经验技巧-我做站长-wordpress/">经验技巧 我做站长 wordpress</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/经验技巧-codecolorer-highlight-代码高亮-wordpress-plugin/">经验技巧 codecolorer highlight 代码高亮 wordpress plugin</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.tanglei.name/codecolorer-adapted-to-highlight/" data-title="将代码高亮插件codecolorer替换为highlight | tanglei&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/jquery-ajax-post-to-download-a-file/" title="jQuery Ajax请求下载文件资源">
+  <strong>上一篇：</strong><br/>
+  <span>
+  jQuery Ajax请求下载文件资源</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/travel-to-northwest-of-China/"  title="毕业旅行之大西北游">
+ <strong>下一篇：</strong><br/> 
+ <span>毕业旅行之大西北游
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/JAVA/" title="JAVA">JAVA<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/" title="Linux&amp;amp;Ubuntu">Linux&amp;amp;Ubuntu<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/" title="MyLife">MyLife<sup>76</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife-清华大学/" title="MyLife 清华大学">MyLife 清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mylife-旅游/" title="Mylife 旅游">Mylife 旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/" title="PHP">PHP<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/" title="PHP">PHP<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/" title="Windows">Windows<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/" title="Windows">Windows<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c++">c++<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/coding小工具/" title="coding小工具">coding小工具<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/" title="coding小工具">coding小工具<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/" title="wordpress">wordpress<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/" title="业界动态">业界动态<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/" title="业界动态">业界动态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/" title="名人名事">名人名事<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>37</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/开开眼界/" title="开开眼界">开开眼界<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/" title="开开眼界">开开眼界<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/" title="我不会算法">我不会算法<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/" title="我不会算法">我不会算法<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/我做站长/" title="我做站长">我做站长<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/" title="我做站长">我做站长<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/" title="数据库应用">数据库应用<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/" title="数据挖掘">数据挖掘<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/" title="敲敲代码">敲敲代码<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码-Scala-工作那些事儿/" title="敲敲代码 Scala 工作那些事儿">敲敲代码 Scala 工作那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/旅游/" title="旅游">旅游<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/旅游/" title="旅游">旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/清华大学/" title="清华大学">清华大学<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/清华大学/" title="清华大学">清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/玩玩手机/" title="玩玩手机">玩玩手机<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/经验技巧/" title="经验技巧">经验技巧<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/经验技巧/" title="经验技巧">经验技巧<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/经验技巧/" title="经验技巧">经验技巧<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/经验技巧/" title="经验技巧">经验技巧<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/" title="经验技巧">经验技巧<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧-我做站长-wordpress/" title="经验技巧 我做站长 wordpress">经验技巧 我做站长 wordpress<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/" title="网络文摘">网络文摘<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/网络文摘/" title="网络文摘">网络文摘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机图形学/" title="计算机图形学">计算机图形学<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/贵州支教行/" title="贵州支教行">贵州支教行<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件0804/" title="软件0804">软件0804<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件0804/" title="软件0804">软件0804<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件体系结构/" title="软件体系结构">软件体系结构<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件学院/" title="软件学院">软件学院<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件学院/" title="软件学院">软件学院<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件配置管理/" title="软件配置管理">软件配置管理<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件配置管理/" title="软件配置管理">软件配置管理<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件项目管理/" title="软件项目管理">软件项目管理<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软考/" title="软考">软考<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/软考/" title="软考">软考<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软考/" title="软考">软考<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/旅游/" title="旅游">旅游<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/中南大学/" title="中南大学">中南大学<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/保研/" title="保研">保研<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/丰田助学/" title="丰田助学">丰田助学<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/电子商务/" title="电子商务">电子商务<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/贵州支教/" title="贵州支教">贵州支教<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/软件度量/" title="软件度量">软件度量<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习生/" title="腾讯实习生">腾讯实习生<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/龙场镇/" title="龙场镇">龙场镇<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/铜厂小学/" title="铜厂小学">铜厂小学<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习日志/" title="腾讯实习日志">腾讯实习日志<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ZOJ/" title="ZOJ">ZOJ<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PAT/" title="PAT">PAT<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机复试/" title="计算机复试">计算机复试<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/宋庆龄基金会/" title="宋庆龄基金会">宋庆龄基金会<sup>8</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="tanglei">tanglei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

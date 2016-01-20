@@ -1,0 +1,1029 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Android 4.2 自动定时切换飞行模式 | tanglei&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="tanglei">
+    
+
+    
+    <meta name="description" content="2015-01-18 (AutoSwitcher1.0)之后的更新说明文档在这里。http://www.tanglei.name/android-airplanemode-auto-switcher-v2///2015-01-18 update
+UPDATE: 代码托管在GitHub上了, 欢迎有兴趣的童鞋加入一起完善。
+之前写过一个Android手机根据时间设定自动切换飞行模式的代码，这次换了个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 4.2 自动定时切换飞行模式">
+<meta property="og:url" content="http://www.tanglei.name/android-airplanemode-auto-switcher//index.html">
+<meta property="og:site_name" content="tanglei's blog">
+<meta property="og:description" content="2015-01-18 (AutoSwitcher1.0)之后的更新说明文档在这里。http://www.tanglei.name/android-airplanemode-auto-switcher-v2///2015-01-18 update
+UPDATE: 代码托管在GitHub上了, 欢迎有兴趣的童鞋加入一起完善。
+之前写过一个Android手机根据时间设定自动切换飞行模式的代码，这次换了个">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/01/android-airplanemode-auto-switcher-1024x456.png">
+<meta property="og:updated_time" content="2016-01-14T15:57:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 4.2 自动定时切换飞行模式">
+<meta name="twitter:description" content="2015-01-18 (AutoSwitcher1.0)之后的更新说明文档在这里。http://www.tanglei.name/android-airplanemode-auto-switcher-v2///2015-01-18 update
+UPDATE: 代码托管在GitHub上了, 欢迎有兴趣的童鞋加入一起完善。
+之前写过一个Android手机根据时间设定自动切换飞行模式的代码，这次换了个">
+
+    
+    <link rel="alternative" href="/atom.xml" title="tanglei&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="tanglei&#39;s blog" title="tanglei&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tanglei&#39;s blog">tanglei&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.tanglei.name">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="//android-airplanemode-auto-switcher//" title="Android 4.2 自动定时切换飞行模式" itemprop="url">Android 4.2 自动定时切换飞行模式</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="tanglei" target="_blank" itemprop="author">tanglei</a>
+		
+  <p class="article-time">
+    <time datetime="2014-01-22T16:05:31.000Z" itemprop="datePublished"> 發表於 2014-01-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			
+		
+		</div>
+		
+		<p><span style="color: #ff0000;">2015-01-18 (AutoSwitcher1.0)之后的<a href="http://www.tanglei.name/android-airplanemode-auto-switcher-v2/">更新说明文档<span style="color: #ff0000;">在这里</span></a>。<a href="http://www.tanglei.name/android-airplanemode-auto-switcher-v2/"><span style="color: #000000;">http://www.tanglei.name/android-airplanemode-auto-switcher-v2/</span></a><span style="color: #333300;">//2015-01-18 update</span></span></p>
+<p><strong>UPDATE:</strong> 代码托管在<a href="https://github.com/tl3shi/AirPlanModeSwitcher" target="_blank" rel="external">GitHub</a>上了, 欢迎有兴趣的童鞋加入一起完善。</p>
+<p>之前写过一个<a href="http://www.tanglei.name/android-switch-airplanemode-3/">Android手机根据时间设定自动切换飞行模式的代码</a>，这次换了个屌丝红米手机之后安装后发现用不了。于是决定重新写一个。</p>
+<p>整个功能要实现的话思路很清晰，只要改变一下系统配置(System.AIRPLANE_MODE_ON)，发送一个通知即可。但发现Android的权限设置没有以前那么开放了。从<strong>Android 4.2</strong>开始(<a href="http://developer.android.com/about/versions/android-4.2.html" target="_blank" rel="external">SDK API 17</a>)，设备的这些属性是只读的，官网上说：</p>
+<blockquote>
+<p>Some device settings defined by Settings.System are now read-only. If your app attempts to write changes to settings defined in Settings.System that have moved to Settings.Global, the write operation will silently fail when running on Android 4.2 and higher.</p>
+</blockquote>
+<p>所以对于Android4.2及其以上版本的手机来说就悲剧了～</p>
+<p>刚开始在代码里面试图去修改System.AIRPLANE_MODE_ON 的属性，UI上貌似没有什么反映，log看到说缺少<strong>android.permission.WRITE_SECURE_SETTINGS</strong> 权限，在manifest里面声明，eclipse 又编译不过提示 <strong>Permission is only System Apps</strong>，说是必须得是系统应用才行。网上也有讨论各种解决方案，有说要写成系统应用，需要一个跟固件一起打包编译或者跟固件有相同的签名才行。同样也有人说通过反射可以实现。第一种方式应该很麻烦，得下某源码包编啊之类的，第二种方案有人说可以尝试下，但具体我也没试～不知道是否靠谱。</p>
+<p>后来的后来，还是从网上找到了解决方案，不过device必须得root，不然<strong>没办法</strong>搞定。原文来自<a href="http://zipta.ru/2012/11/borba-s-android-4-2/" target="_blank">这里</a>，虽然不知道是哪国语言～但代码还是认识。</p>
+<pre>&lt;cc>
+//开启飞行模式
+settings put global airplane_mode_on 1
+am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true
+//关闭飞行模式
+settings put global airplane_mode_on 0
+am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false
+&lt;/cc></pre>
+
+<p>通过adb shell，输入以上两句命令，可以将切换飞行模式。核心问题解决了～剩下的就是需要通过Java代码去调用shell命令，这个不难～不过得注意需要通过root去调用，另外得防止程序卡死～</p>
+<p>再后来在<a href="http://stackoverflow.com/questions/15861046/how-to-toggle-airplane-mode-on-android-4-2-using-root" target="_blank">stackoverflow</a>上也有人提到了这个解决方案，并且还给了另外一个解决方案，即通过sqlite去<strong>直接</strong>改变Android的系统配置。数据库位置在/data/data/com.android.providers.settings/databases/settings.db</p>
+<pre>&lt;cc>
+sqlite3 /data/data/com.android.providers.settings/databases/settings.db
+insert into global values(null, 'airplane_mode_on', 1); //相应的插入0值，即是取消飞行模式
+&lt;/cc></pre>
+
+<p>当然上面的数据库修改之后要生效，还是必须得发上面的那个broadcast才能生效。</p>
+<p>下面是我写的小程序的界面：</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/01/android-airplanemode-auto-switcher.png"><img class="size-large wp-image-2294" title="Android 自动定时切换飞行模式-android-airplanemode-auto-switcher" src="http://www.tanglei.name/wp-content/uploads/2014/01/android-airplanemode-auto-switcher-1024x456.png" alt="android自动切换飞行模式" width="1024" height="456"></a></p>
+<p>使用方法如下：</p>
+<ol>
+<li>分别设定好需要开启、关闭飞行模式的时间，默认情况下为凌晨12点30分开启飞行模式，早上7点关闭飞行模式。然后打开当前状态的按钮即可，打开后会提示下次切换飞行模式的时间。</li>
+<li>设定的时间到之后，App会自动尝试去启用飞行模式状态，如上图第二副图所示，当然得允许了(最好添加到信任程序列表，不然每次弹框)。另外，设定的时间到之后，有可能你还正在使用手机而不想马上切换飞行模式，App会给你5s的时间考虑，5秒之后你没有操作，app就会自动启用飞行模式了。当然你取消之后，这次就不会切换了，不过当你通过按手机返回键(Home键不会)或者杀掉这个进程再重新启动这个App的时候，会根据时间设定满足规则则自动切换。</li>
+<li>切换&#8221;关闭&#8221;状态即取消设定功能，若当前手机正处于飞行模式状态，也会切换为正常状态。</li>
+</ol>
+<p>注意：针对Android4.2及其以上的版本，手机需要ROOT才OK，且建议添加到信任程序列表。4.2之前的版本是木有问题的。</p>
+<p>欢迎有兴趣的同学<del datetime="2014-01-27T08:22:26+00:00">下载1</del> <a href="http://www.tanglei.name/wp-content/uploads/2014/01/airplanemode_auto_switcher.apk_v0.2.zip">下载2</a>试用，有建议/意见欢迎留言反馈～</p>
+<p>TODO：</p>
+<ol>
+<li>Android 各个版本UI风格的统一</li>
+<li>增加多个时间段的设置，支持晚上睡觉和中午睡觉都转飞行模式，既省电又防打扰</li>
+<li>自己写着瞎玩，应该有不少Bug</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>►<a class="article-category-link" href="/categories/android/coding小工具/">coding小工具</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Android-4-2/">Android 4.2</a><a href="/tags/AutoSwitcher/">AutoSwitcher</a><a href="/tags/WRITE-SECURE-SETTINGS/">WRITE_SECURE_SETTINGS</a><a href="/tags/android/">android</a><a href="/tags/没有权限/">没有权限</a><a href="/tags/飞行模式/">飞行模式</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.tanglei.name//android-airplanemode-auto-switcher//" data-title="Android 4.2 自动定时切换飞行模式 | tanglei&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="//how-to-generate-magic-picture-in-qzone//" title="所谓QQ空间神奇的日志、图片~原来是酱紫&amp;#8230;">
+  <strong>上一篇：</strong><br/>
+  <span>
+  所谓QQ空间神奇的日志、图片~原来是酱紫&amp;#8230;</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="//how-to-batch-delete-uploading-files-in-baidu-pan//"  title="百度云管家批量删除正在上传文件列表">
+ <strong>下一篇：</strong><br/> 
+ <span>百度云管家批量删除正在上传文件列表
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/JAVA/" title="JAVA">JAVA<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/" title="Linux&amp;amp;Ubuntu">Linux&amp;amp;Ubuntu<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/" title="MyLife">MyLife<sup>76</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife-清华大学/" title="MyLife 清华大学">MyLife 清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mylife-旅游/" title="Mylife 旅游">Mylife 旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/" title="PHP">PHP<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/" title="PHP">PHP<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/" title="Windows">Windows<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/" title="Windows">Windows<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c++">c++<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/coding小工具/" title="coding小工具">coding小工具<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/" title="coding小工具">coding小工具<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/" title="wordpress">wordpress<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/" title="业界动态">业界动态<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/" title="业界动态">业界动态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/" title="名人名事">名人名事<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>37</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/开开眼界/" title="开开眼界">开开眼界<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/" title="开开眼界">开开眼界<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/" title="我不会算法">我不会算法<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/" title="我不会算法">我不会算法<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/我做站长/" title="我做站长">我做站长<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/" title="我做站长">我做站长<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/" title="数据库应用">数据库应用<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/" title="数据挖掘">数据挖掘<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/" title="敲敲代码">敲敲代码<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码-Scala-工作那些事儿/" title="敲敲代码 Scala 工作那些事儿">敲敲代码 Scala 工作那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/旅游/" title="旅游">旅游<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/旅游/" title="旅游">旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/清华大学/" title="清华大学">清华大学<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/清华大学/" title="清华大学">清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/玩玩手机/" title="玩玩手机">玩玩手机<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/经验技巧/" title="经验技巧">经验技巧<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/经验技巧/" title="经验技巧">经验技巧<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/经验技巧/" title="经验技巧">经验技巧<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/经验技巧/" title="经验技巧">经验技巧<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/" title="经验技巧">经验技巧<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧-我做站长-wordpress/" title="经验技巧 我做站长 wordpress">经验技巧 我做站长 wordpress<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/" title="网络文摘">网络文摘<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/网络文摘/" title="网络文摘">网络文摘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机图形学/" title="计算机图形学">计算机图形学<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/贵州支教行/" title="贵州支教行">贵州支教行<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件0804/" title="软件0804">软件0804<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件0804/" title="软件0804">软件0804<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件体系结构/" title="软件体系结构">软件体系结构<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件学院/" title="软件学院">软件学院<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件学院/" title="软件学院">软件学院<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件配置管理/" title="软件配置管理">软件配置管理<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件配置管理/" title="软件配置管理">软件配置管理<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件项目管理/" title="软件项目管理">软件项目管理<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软考/" title="软考">软考<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/软考/" title="软考">软考<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软考/" title="软考">软考<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/旅游/" title="旅游">旅游<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/中南大学/" title="中南大学">中南大学<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/保研/" title="保研">保研<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/丰田助学/" title="丰田助学">丰田助学<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/电子商务/" title="电子商务">电子商务<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/贵州支教/" title="贵州支教">贵州支教<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/软件度量/" title="软件度量">软件度量<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习生/" title="腾讯实习生">腾讯实习生<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/龙场镇/" title="龙场镇">龙场镇<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/铜厂小学/" title="铜厂小学">铜厂小学<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习日志/" title="腾讯实习日志">腾讯实习日志<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ZOJ/" title="ZOJ">ZOJ<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PAT/" title="PAT">PAT<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机复试/" title="计算机复试">计算机复试<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/宋庆龄基金会/" title="宋庆龄基金会">宋庆龄基金会<sup>8</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="tanglei">tanglei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,1045 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Mac/Windows Wireshark/tcpdump抓包TCP 3次握手,4次挥手实例 | tanglei&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="tanglei">
+    
+
+    
+    <meta name="description" content="Mac OS系统10.9.1，安装Wireshark，后不能跑，提示安装X11，到这里安装XQuartz即可。
+TIPS：安装XQuartz 后，重新启动Wireshark，让选择X11，这是去选/Applications/Utilities/XQuartz.app（默认位置），启动得比较久，得有点耐心，若不懂可参考这里installing wireshark on mac osx10.8 mou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac/Windows Wireshark/tcpdump抓包TCP 3次握手,4次挥手实例">
+<meta property="og:url" content="http://www.tanglei.name/example-show-3-times-handshaking-of-tcp-in-mac-or-windows//index.html">
+<meta property="og:site_name" content="tanglei's blog">
+<meta property="og:description" content="Mac OS系统10.9.1，安装Wireshark，后不能跑，提示安装X11，到这里安装XQuartz即可。
+TIPS：安装XQuartz 后，重新启动Wireshark，让选择X11，这是去选/Applications/Utilities/XQuartz.app（默认位置），启动得比较久，得有点耐心，若不懂可参考这里installing wireshark on mac osx10.8 mou">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/03/Image_thumb.png">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/03/Image1_thumb.png">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/03/Image3_thumb.png">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/03/image_thumb.png">
+<meta property="og:updated_time" content="2016-01-14T15:57:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac/Windows Wireshark/tcpdump抓包TCP 3次握手,4次挥手实例">
+<meta name="twitter:description" content="Mac OS系统10.9.1，安装Wireshark，后不能跑，提示安装X11，到这里安装XQuartz即可。
+TIPS：安装XQuartz 后，重新启动Wireshark，让选择X11，这是去选/Applications/Utilities/XQuartz.app（默认位置），启动得比较久，得有点耐心，若不懂可参考这里installing wireshark on mac osx10.8 mou">
+
+    
+    <link rel="alternative" href="/atom.xml" title="tanglei&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="tanglei&#39;s blog" title="tanglei&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tanglei&#39;s blog">tanglei&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.tanglei.name">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="//example-show-3-times-handshaking-of-tcp-in-mac-or-windows//" title="Mac/Windows Wireshark/tcpdump抓包TCP 3次握手,4次挥手实例" itemprop="url">Mac/Windows Wireshark/tcpdump抓包TCP 3次握手,4次挥手实例</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="tanglei" target="_blank" itemprop="author">tanglei</a>
+		
+  <p class="article-time">
+    <time datetime="2014-03-11T13:15:15.000Z" itemprop="datePublished"> 發表於 2014-03-11</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			
+		
+		</div>
+		
+		<p>Mac OS系统10.9.1，安装<a href="http://www.wireshark.org/download.html" target="_blank" rel="external">Wireshark</a>，后不能跑，提示安装X11，到这里安装<a href="http://xquartz.macosforge.org/landing/" target="_blank" rel="external">XQuartz</a>即可。</p>
+<p>TIPS：安装XQuartz 后，重新启动Wireshark，让选择X11，这是去选/Applications/Utilities/XQuartz.app（默认位置），启动得比较久，得有点耐心，若不懂可参考这里<a href="http://blog.israeltorres.org/home/write-ups/installingwiresharkonmacosx108mountainlion" target="_blank" rel="external">installing wireshark on mac osx10.8 mountainlion</a> 和 <a href="http://ask.wireshark.org/questions/12140/cant-run-wireshark-in-mac-os-x-mountain-lion" target="_blank" rel="external">cannot run wireshark in mac os x moutain-loin</a>.</p>
+<p>然后抓包～跟windows一样了。下图是访问<a href="http://tanglei.me/" target="_blank" rel="external">tanglei.me</a>抓包，用的github pages搭建的博客，访问IP是192.30.252.153(or 154)，看到这个IP，为了看得更清楚，可以利用下Filter。Wireshark功能很强大的说。</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/03/Image.png"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="Image" src="http://www.tanglei.name/wp-content/uploads/2014/03/Image_thumb.png" alt="Image" width="930" height="695" border="0"></a></p>
+<p>如下图是建立连接时的3次握手～其中,SYN=Synchronize Sequence Numbers, ACK=Acknowledgement Number</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/03/Image1.png"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="Image(1)" src="http://www.tanglei.name/wp-content/uploads/2014/03/Image1_thumb.png" alt="Image(1)" width="914" height="112" border="0"></a></p>
+<ol>
+<li>Client(本机192.168.1.100)发起TCP请求, 发送序号为x(=0)的SYN包;  ——SYN(x)</li>
+<li>Server(Github 192.30.252.153)收到连接请求，给出响应ACK(x+1=1),同时携带一个序号Seq,y(=0);  —— SYN(y)+ACK(x+1)</li>
+<li>Client(本机192.168.1.100)对响应做出回复，返回Ack(y+1=1),同时自己序号自增Seq＝1;  ——ACK(y+1)</li>
+</ol>
+<p>文后画了下3次/4次握手的示意图。</p>
+<p>3次握手完成，TCP连接建立起来了～随后就直接通信，上图可以看到Client就直接去Get请求了(注意http是应用层的协议，底层传输还是走TCP哦~). 安全的连接就是这样建立起来滴，通过检验序号是否合法，Client端/Server端分别做出相应的机制，比如自己序号y包发出去了，没有收到y+1的响应，对方可能没有收到，然后可能一定时间后 ，会重发这个y包～</p>
+<p>再来看看断开连接的4次握手(挥手)。</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/03/Image3.png"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="Image(3)" src="http://www.tanglei.name/wp-content/uploads/2014/03/Image3_thumb.png" alt="Image(3)" width="927" height="196" border="0"></a></p>
+<p>这里是Github作为Client主动发起关闭连接的请求，这里的FIN=FINish</p>
+<ol>
+<li>Github 发Fin(x=6831)包;  ——FIN(X)</li>
+<li>本机收到上面的包后，做出ACK(x+1=6832)响应,跟Github说我收到了～，你别再发了;  ——ACK(X+1)</li>
+<li>你要关了，那我也准备关吧～ 于是发Fin(y=1054)包,你准备好了么？;  ——FIN(Y)</li>
+<li>Github准备好了，给出响应ACK(y+1=1055)，告诉本机准备好了;  ——ACK(Y+1)</li>
+</ol>
+<p>双方确认都要关闭了，然后断开TCP连接。</p>
+<p>此过程用tcpdump也是可以清晰的看到滴~下面以windows情况为例,windows上的<strong>tcpdump</strong>叫<strong>windump</strong>,用法跟tcpdump一样~详细的可以<a href="http://www.tcpdump.org/manpages/tcpdump.1.html" target="_blank" rel="external">查看下其文档</a></p>
+<p>本机IP打下码~ 如下166.111.X.X是本机IP.查看同样的例子~</p>
+<p>TIPS：用tcpdump/windump时注意选指定的网卡，若安装虚拟机等可能默认的选不到正确的那块，就抓不到包。(windump -D 查看网卡) 下面命令是-i 2 (选择监控第2块网卡)， -n (不转换名字，以实际IP地址显示结果), -S (大写的S，打印绝对的序号号，如果没有这个选项的话，非SYN包如ack就是相对的，不方便查看，如果没有这个选项下面第3行ack可能就是1)， host通信的地址为192.30.252.153，后面的就不用解释了分别是tcp协议，80端口，然后结果输出到文件。</p>
+<p>另外，不同的浏览器可能会对你访问页面发起多次请求，为了更好的看结果，你得注意看某一个端口，如下是与57245端口的请求。实际过程中可能还有其他端口的请求，下面的例子把其他端口的请求给去掉了滴。</p>
+<pre>&lt;cc class="cpp">
+C:\Users\tanglei>windump -i 2 -n -S host 192.30.252.153 and tcp port 80>tcpdump.log
+windump: listening on \Device\NPF_{84E79A70-5025-44D2-AB45-24F3203D00D6}
+16:17:58.813323 IP 166.111.X.X.57245 > 192.30.252.153.80: S 1337949936:1337949936(0) win 65535 
+16:17:59.103384 IP 192.30.252.153.80 > 166.111.X.X.57245: S 3859825850:3859825850(0) ack 1337949937 win 14360 
+16:17:59.103465 IP 166.111.X.X.57245 > 192.30.252.153.80: . ack 3859825851 win 1024
+16:17:59.103634 IP 166.111.X.X.57245 > 192.30.252.153.80: P 1337949937:1337950298(361) ack 3859825851 win 1024
+16:17:59.393901 IP 192.30.252.153.80 > 166.111.X.X.57245: P 3859825851:3859826074(223) ack 1337950298 win 16
+16:17:59.444259 IP 166.111.X.X.57245 > 192.30.252.153.80: . ack 3859826074 win 1023
+16:18:09.393241 IP 192.30.252.153.80 > 166.111.X.X.57245: F 3859826074:3859826074(0) ack 1337950298 win 16
+16:18:09.393290 IP 166.111.X.X.57245 > 192.30.252.153.80: . ack 3859826075 win 1023
+16:18:32.768012 IP 166.111.X.X.57245 > 192.30.252.153.80: F 1337950298:1337950298(0) ack 3859826075 win 1023
+16:18:33.057948 IP 192.30.252.153.80 > 166.111.X.X.57245: . ack 1337950299 win 16
+&lt;/cc></pre>
+
+<p>前面3行，正是连tanglei.me时发起的TCP请求的3次握手，末尾4行是要断开的4次握手(挥手).</p>
+<p>下面的解释用C代表最先主动发起请求的1方，S代表接受到请求的方.</p>
+<ul>
+<li>第1行：(C —&gt;S) SYN包，序号1337949936</li>
+<li>第2行：(S —&gt;C) SYN+ACK，ACK为1337949936+1=1337949937，序号为3859825850</li>
+<li>第3行：(C —&gt;S) ACK，ACK为3859825850+1=3859825851</li>
+</ul>
+<p>再看末尾四行的4次握手。</p>
+<ul>
+<li>末4行：(C —&gt;S) FIN包，序号3859826074</li>
+<li>末3行：(S —&gt;C) ACK包，序号3859826074+1=3859826075</li>
+<li>末2行：(S —&gt;C) FIN包，序号1337950298</li>
+<li>末1行：(C —&gt;S) ACK包，序号1337950298+1=1337950299</li>
+</ul>
+<p>画个图描述下3/4次握手是什么样的.</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/03/image.png"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="image" src="http://www.tanglei.name/wp-content/uploads/2014/03/image_thumb.png" alt="image" width="539" height="287" border="0"></a></p>
+<p>以前计算机网络课还详细学了下TCP/UDP的协议，这些数据包是怎么组织放在某个位之类的，时间久了都忘了啊～</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Linux-amp-Ubuntu/">Linux&amp;Ubuntu</a>►<a class="article-category-link" href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/">SoftwareEngineering</a>►<a class="article-category-link" href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/Windows/">Windows</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/3次握手/">3次握手</a><a href="/tags/TCP-IP/">TCP/IP</a><a href="/tags/tcpdump/">tcpdump</a><a href="/tags/windump/">windump</a><a href="/tags/计算机网络/">计算机网络</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.tanglei.name//example-show-3-times-handshaking-of-tcp-in-mac-or-windows//" data-title="Mac/Windows Wireshark/tcpdump抓包TCP 3次握手,4次挥手实例 | tanglei&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="//a-bug-relate-with-float-point-between-x86-and-x64-in-csharp//" title="C#因x86-x64环境不同引发的浮点&amp;#8221;bug&amp;#8221;~">
+  <strong>上一篇：</strong><br/>
+  <span>
+  C#因x86-x64环境不同引发的浮点&amp;#8221;bug&amp;#8221;~</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="//how-to-generate-magic-picture-in-qzone//"  title="所谓QQ空间神奇的日志、图片~原来是酱紫&amp;#8230;">
+ <strong>下一篇：</strong><br/> 
+ <span>所谓QQ空间神奇的日志、图片~原来是酱紫&amp;#8230;
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/JAVA/" title="JAVA">JAVA<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/" title="Linux&amp;amp;Ubuntu">Linux&amp;amp;Ubuntu<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/" title="MyLife">MyLife<sup>76</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife-清华大学/" title="MyLife 清华大学">MyLife 清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mylife-旅游/" title="Mylife 旅游">Mylife 旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/" title="PHP">PHP<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/" title="PHP">PHP<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/" title="Windows">Windows<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/" title="Windows">Windows<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c++">c++<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/coding小工具/" title="coding小工具">coding小工具<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/" title="coding小工具">coding小工具<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/" title="wordpress">wordpress<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/" title="业界动态">业界动态<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/" title="业界动态">业界动态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/" title="名人名事">名人名事<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>37</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/开开眼界/" title="开开眼界">开开眼界<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/" title="开开眼界">开开眼界<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/" title="我不会算法">我不会算法<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/" title="我不会算法">我不会算法<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/我做站长/" title="我做站长">我做站长<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/" title="我做站长">我做站长<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/" title="数据库应用">数据库应用<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/" title="数据挖掘">数据挖掘<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/" title="敲敲代码">敲敲代码<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码-Scala-工作那些事儿/" title="敲敲代码 Scala 工作那些事儿">敲敲代码 Scala 工作那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/旅游/" title="旅游">旅游<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/旅游/" title="旅游">旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/清华大学/" title="清华大学">清华大学<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/清华大学/" title="清华大学">清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/玩玩手机/" title="玩玩手机">玩玩手机<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/经验技巧/" title="经验技巧">经验技巧<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/经验技巧/" title="经验技巧">经验技巧<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/经验技巧/" title="经验技巧">经验技巧<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/经验技巧/" title="经验技巧">经验技巧<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/" title="经验技巧">经验技巧<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧-我做站长-wordpress/" title="经验技巧 我做站长 wordpress">经验技巧 我做站长 wordpress<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/" title="网络文摘">网络文摘<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/网络文摘/" title="网络文摘">网络文摘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机图形学/" title="计算机图形学">计算机图形学<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/贵州支教行/" title="贵州支教行">贵州支教行<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件0804/" title="软件0804">软件0804<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件0804/" title="软件0804">软件0804<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件体系结构/" title="软件体系结构">软件体系结构<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件学院/" title="软件学院">软件学院<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件学院/" title="软件学院">软件学院<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件配置管理/" title="软件配置管理">软件配置管理<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件配置管理/" title="软件配置管理">软件配置管理<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件项目管理/" title="软件项目管理">软件项目管理<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软考/" title="软考">软考<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/软考/" title="软考">软考<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软考/" title="软考">软考<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/旅游/" title="旅游">旅游<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/中南大学/" title="中南大学">中南大学<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/保研/" title="保研">保研<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/丰田助学/" title="丰田助学">丰田助学<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/电子商务/" title="电子商务">电子商务<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/贵州支教/" title="贵州支教">贵州支教<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/软件度量/" title="软件度量">软件度量<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习生/" title="腾讯实习生">腾讯实习生<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/龙场镇/" title="龙场镇">龙场镇<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/铜厂小学/" title="铜厂小学">铜厂小学<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习日志/" title="腾讯实习日志">腾讯实习日志<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ZOJ/" title="ZOJ">ZOJ<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PAT/" title="PAT">PAT<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机复试/" title="计算机复试">计算机复试<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/宋庆龄基金会/" title="宋庆龄基金会">宋庆龄基金会<sup>8</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="tanglei">tanglei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

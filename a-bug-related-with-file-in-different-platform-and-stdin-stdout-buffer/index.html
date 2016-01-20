@@ -1,0 +1,1032 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>跨平台文本文件及缓冲区的一个坑 | tanglei&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="tanglei">
+    
+
+    
+    <meta name="description" content="此坑是参加微软秋令营活动下午编程测试时踩上的，编程测试题目本身不算难，难的是……对于没有ACM之类比赛的同学来说，要按照其要求读入输入和输出相应格式的结果来说就呵呵了。一个小算法总共可能花40分钟的时间，有30分钟的时间是用来解决输入输出的。对于平时在实验室写项目的同学来说，应该不会有太多的机会去写底层std io 和 file io，应该都封装好了，写具体逻辑吧。 不过从另外一个方面也说明了自己">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨平台文本文件及缓冲区的一个坑">
+<meta property="og:url" content="http://www.tanglei.name/a-bug-related-with-file-in-different-platform-and-stdin-stdout-buffer//index.html">
+<meta property="og:site_name" content="tanglei's blog">
+<meta property="og:description" content="此坑是参加微软秋令营活动下午编程测试时踩上的，编程测试题目本身不算难，难的是……对于没有ACM之类比赛的同学来说，要按照其要求读入输入和输出相应格式的结果来说就呵呵了。一个小算法总共可能花40分钟的时间，有30分钟的时间是用来解决输入输出的。对于平时在实验室写项目的同学来说，应该不会有太多的机会去写底层std io 和 file io，应该都封装好了，写具体逻辑吧。 不过从另外一个方面也说明了自己">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/07/Image_thumb.jpg">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/07/Image1_thumb.jpg">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/07/Image2_thumb.jpg">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/07/Image3_thumb.jpg">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/07/Image4_thumb.jpg">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/07/Image5_thumb.jpg">
+<meta property="og:image" content="http://www.tanglei.name/wp-content/uploads/2014/07/Image6_thumb.jpg">
+<meta property="og:updated_time" content="2016-01-14T15:57:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跨平台文本文件及缓冲区的一个坑">
+<meta name="twitter:description" content="此坑是参加微软秋令营活动下午编程测试时踩上的，编程测试题目本身不算难，难的是……对于没有ACM之类比赛的同学来说，要按照其要求读入输入和输出相应格式的结果来说就呵呵了。一个小算法总共可能花40分钟的时间，有30分钟的时间是用来解决输入输出的。对于平时在实验室写项目的同学来说，应该不会有太多的机会去写底层std io 和 file io，应该都封装好了，写具体逻辑吧。 不过从另外一个方面也说明了自己">
+
+    
+    <link rel="alternative" href="/atom.xml" title="tanglei&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="tanglei&#39;s blog" title="tanglei&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tanglei&#39;s blog">tanglei&#39;s blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.tanglei.name">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="//a-bug-related-with-file-in-different-platform-and-stdin-stdout-buffer//" title="跨平台文本文件及缓冲区的一个坑" itemprop="url">跨平台文本文件及缓冲区的一个坑</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="tanglei" target="_blank" itemprop="author">tanglei</a>
+		
+  <p class="article-time">
+    <time datetime="2014-07-06T07:02:44.000Z" itemprop="datePublished"> 發表於 2014-07-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			
+		
+		</div>
+		
+		<p>此坑是参加微软秋令营活动下午编程测试时踩上的，编程测试题目本身不算难，难的是……对于没有ACM之类比赛的同学来说，要按照其要求读入输入和输出相应格式的结果来说就呵呵了。一个小算法总共可能花40分钟的时间，有30分钟的时间是用来解决输入输出的。对于平时在实验室写项目的同学来说，应该不会有太多的机会去写底层std io 和 file io，应该都封装好了，写具体逻辑吧。 不过从另外一个方面也说明了自己基础还是掌握得不牢固呀~比如不记得控制精度输出的函数等之类的。另外提醒下做类似的题目得小心输入输出格式及下面要讲到的缓冲区的问题。</p>
+<p>编程测试是这样的，测试前，工作人员将题目和题目的输入数据等通过U盘copy给你，然后自己读题做题，最后再将自己的代码及输出结果copy回U盘~(微软收集U盘后统一对结果进行check。突然发现要是check答案的程序在匹配标准答案的文件和我输出的文件是没有注意本文提到的问题，那就又呵呵了)。</p>
+<p>实际上，问题也不大，就是文本文件行末换行符的问题，下意识可能会注意这个问题，但在上述的情景下，忘掉这个问题也是情有可原的 :)</p>
+<p>下图SampleInput是U盘copy到mac上的文本文件(Windows环境下生成的)，SampleInput2.txt是在mac下打开SampleInput.txt的内容，然后copy再保存的，<strong>表面</strong>内容是一样的。</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/07/Image.jpg"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border: 0px;" title="Image" src="http://www.tanglei.name/wp-content/uploads/2014/07/Image_thumb.jpg" alt="Image" width="375" height="245" border="0"></a></p>
+<p>然后看下面的代码，就是读取文件里面的前两行并输出。</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/07/Image1.jpg"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border: 0px;" title="Image(1)" src="http://www.tanglei.name/wp-content/uploads/2014/07/Image1_thumb.jpg" alt="Image(1)" width="417" height="249" border="0"></a></p>
+<p>(g++编译)运行结果：</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/07/Image2.jpg"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border: 0px;" title="Image(2)" src="http://www.tanglei.name/wp-content/uploads/2014/07/Image2_thumb.jpg" alt="Image(2)" width="384" height="119" border="0"></a></p>
+<p>前面也提到结果是因为Win下换行符和Mac下换行符的不一致的问题，不过思考下输入SampleInput.txt的<strong>输出结果为啥是</strong>?</p>
+<pre>&lt;cc>
+:6c|1
+:12dedcba|1
+&lt;/cc></pre>
+
+<p>vim -b file 可以看到^M~ （注意替换^M时输入应该是：ctrl+v,ctrl+m / 也可以用\r）</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/07/Image3.jpg"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border: 0px;" title="Image(3)" src="http://www.tanglei.name/wp-content/uploads/2014/07/Image3_thumb.jpg" alt="Image(3)" width="569" height="100" border="0"></a></p>
+<p>vim 打开后,通过命令 <strong>:%!xxd</strong> 可以查看文件二进制格式，【新技能Get】。</p>
+<p>SampleInput2.txt</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/07/Image4.jpg"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border: 0px;" title="Image(4)" src="http://www.tanglei.name/wp-content/uploads/2014/07/Image4_thumb.jpg" alt="Image(4)" width="473" height="72" border="0"></a></p>
+<p>SampleInput.txt</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/07/Image5.jpg"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border: 0px;" title="Image(5)" src="http://www.tanglei.name/wp-content/uploads/2014/07/Image5_thumb.jpg" alt="Image(5)" width="491" height="67" border="0"></a></p>
+<p>查看ASCii表，0a(10)换行, 0d(13)回车，&#8221;回车&#8221;是告诉打字机把打印头定位在左边界；&#8221;换行&#8221;，告诉打字机把纸向下移一行（参考<a href="http://www.ruanyifeng.com/blog/2006/04/post_213.html" target="_blank" rel="external">回车与换行</a>：原文说windows行末是\r\n, linux/unix是\n, 而mac是\r，不过从上面可以看出我的mac osx也是\n, Ruanyifeng06年post的这篇，应该是Apple做了改变和unix/linux保持一致了吧?）。</p>
+<p>回到前面的一个疑问，即读取Windows下的那两行并输出结果的问题，来看看结果的第一行 </p>
+<pre>&lt;cc inline="true">:6c|1&lt;/cc></pre>
+
+<p>，冒号后面的应该是字符串的长度6，可以看出里面除了“abc|1”外，还有那个回车“\r”，这里其实是因为输出缓冲区的问题，IO设计者为了提高效率不会说接受到IO指令就往设备输出，应该是达到一定长度后再统一一次输出。默认情况下标准输入(stdin)和标准输出(stdout)是行级缓冲区，stderr是无缓冲的(不同实现可能不一样)，“abc|1”放到缓冲区了,然后\r，前面也提到效果就当前打印机头(这里就是当前缓冲区输入指针)直接回退到开头，然后再放“:”(覆盖了之前缓冲区里面的值“a”)和长度6(覆盖“b”)于是缓冲区里的数据现在是”:6c|1”，现在遇到了换行符std::endl，换行输出到设备(控制台)。</p>
+<p>同理，“abcdedcba|1“遇到\r后直接到行首, 再”:12”，最后输出“:12dedcba|1”。</p>
+<p>再举个例子，如下代码应该是直接输出“Hello world.”</p>
+<pre>&lt;cc class="cpp">
+//"Hello world."
+void testr()
+{
+    char ss[] = "abcd\refgh";
+    cout &lt;&lt; ss &lt;&lt; "1234";
+    cout &lt;&lt; "0000" &lt;&lt; (char)(13) &lt;&lt; "Hello world." &lt;&lt; endl;
+}
+&lt;/cc></pre>
+
+<p>另外，提醒下Xcode IDE运行的输出结果跟控制台输出的运行结果是<strong>不一致</strong>的。XCode IDE输出应该是解析到\r就输出了吧，标准控制台的话仍然是跟上面的分析一致。</p>
+<p><a href="http://www.tanglei.name/wp-content/uploads/2014/07/Image6.jpg"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border: 0px;" title="Image(6)" src="http://www.tanglei.name/wp-content/uploads/2014/07/Image6_thumb.jpg" alt="Image(6)" width="435" height="118" border="0"></a></p>
+<p>Ref:</p>
+<ul>
+<li>ASCII: <a href="http://www.asciitable.com/" target="_blank" rel="external">http://www.asciitable.com/</a></li>
+<li>回车与换行: <a href="http://www.ruanyifeng.com/blog/2006/04/post_213.html" title="http://www.ruanyifeng.com/blog/2006/04/post_213.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2006/04/post_213.html</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/c/">c++</a>►<a class="article-category-link" href="/categories/c/Windows/">Windows</a>►<a class="article-category-link" href="/categories/c/Windows/敲敲代码/">敲敲代码</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/微软秋令营/">微软秋令营</a><a href="/tags/换行符/">换行符</a><a href="/tags/缓冲区/">缓冲区</a><a href="/tags/跨平台/">跨平台</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.tanglei.name//a-bug-related-with-file-in-different-platform-and-stdin-stdout-buffer//" data-title="跨平台文本文件及缓冲区的一个坑 | tanglei&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="//debug-in-xcode-is-crap//" title="吐槽下xcode debug功能">
+  <strong>上一篇：</strong><br/>
+  <span>
+  吐槽下xcode debug功能</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="//pass-by-value-when-using-c-like-parameter-is-better-than-pass-by-referene//"  title="C++ 传参时传内置类型时用传值(pass by value)方式效率较高">
+ <strong>下一篇：</strong><br/> 
+ <span>C++ 传参时传内置类型时用传值(pass by value)方式效率较高
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/JAVA/" title="JAVA">JAVA<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/" title="Linux&amp;amp;Ubuntu">Linux&amp;amp;Ubuntu<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/" title="MyLife">MyLife<sup>76</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/" title="MyLife">MyLife<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife-清华大学/" title="MyLife 清华大学">MyLife 清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mylife-旅游/" title="Mylife 旅游">Mylife 旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/" title="PHP">PHP<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/" title="PHP">PHP<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/" title="SoftwareEngineering">SoftwareEngineering<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/" title="Windows">Windows<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/SoftwareEngineering/Windows/" title="Windows">Windows<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/" title="Windows">Windows<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c++">c++<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/coding小工具/" title="coding小工具">coding小工具<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/" title="coding小工具">coding小工具<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/" title="wordpress">wordpress<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/" title="wordpress">wordpress<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/" title="业界动态">业界动态<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/" title="业界动态">业界动态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/" title="名人名事">名人名事<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>37</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/实习那些事儿/" title="实习那些事儿">实习那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/开开眼界/" title="开开眼界">开开眼界<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/" title="开开眼界">开开眼界<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/" title="我不会算法">我不会算法<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/" title="我不会算法">我不会算法<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/我做站长/" title="我做站长">我做站长<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/" title="我做站长">我做站长<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/wordpress/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/开开眼界/我做站长/" title="我做站长">我做站长<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/" title="数据库应用">数据库应用<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/" title="数据挖掘">数据挖掘<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/我不会算法/数据挖掘/" title="数据挖掘">数据挖掘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/coding小工具/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/" title="敲敲代码">敲敲代码<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据挖掘/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/Windows/敲敲代码/" title="敲敲代码">敲敲代码<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我不会算法/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/敲敲代码/" title="敲敲代码">敲敲代码<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码-Scala-工作那些事儿/" title="敲敲代码 Scala 工作那些事儿">敲敲代码 Scala 工作那些事儿<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/旅游/" title="旅游">旅游<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/实习那些事儿/旅游/" title="旅游">旅游<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/清华大学/" title="清华大学">清华大学<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/清华大学/" title="清华大学">清华大学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/玩玩手机/" title="玩玩手机">玩玩手机<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/MyLife/玩玩手机/" title="玩玩手机">玩玩手机<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/业界动态/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/" title="移动领域">移动领域<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/Windows/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/实习那些事儿/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux-amp-Ubuntu/经验技巧/" title="经验技巧">经验技巧<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wordpress/经验技巧/" title="经验技巧">经验技巧<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/我做站长/经验技巧/" title="经验技巧">经验技巧<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/玩玩手机/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/PHP/python/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/敲敲代码/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows/经验技巧/" title="经验技巧">经验技巧<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/经验技巧/" title="经验技巧">经验技巧<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/" title="经验技巧">经验技巧<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧-我做站长-wordpress/" title="经验技巧 我做站长 wordpress">经验技巧 我做站长 wordpress<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/" title="网络文摘">网络文摘<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/移动领域/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/名人名事/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业界动态/网络文摘/" title="网络文摘">网络文摘<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/网络文摘/" title="网络文摘">网络文摘<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/计算机图形学/" title="计算机图形学">计算机图形学<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/JAVA/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络文摘/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/贵州支教行/" title="贵州支教行">贵州支教行<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件0804/" title="软件0804">软件0804<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件0804/" title="软件0804">软件0804<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件体系结构/" title="软件体系结构">软件体系结构<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件学院/" title="软件学院">软件学院<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件学院/" title="软件学院">软件学院<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件度量及其应用/" title="软件度量及其应用">软件度量及其应用<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软件配置管理/" title="软件配置管理">软件配置管理<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件配置管理/" title="软件配置管理">软件配置管理<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软件项目管理/" title="软件项目管理">软件项目管理<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/软考/" title="软考">软考<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MyLife/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库应用/软考/" title="软考">软考<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/经验技巧/软考/" title="软考">软考<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SoftwareEngineering/软考/" title="软考">软考<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/旅游/" title="旅游">旅游<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/中南大学/" title="中南大学">中南大学<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/保研/" title="保研">保研<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/丰田助学/" title="丰田助学">丰田助学<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/电子商务/" title="电子商务">电子商务<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/贵州支教/" title="贵州支教">贵州支教<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/软件度量/" title="软件度量">软件度量<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习生/" title="腾讯实习生">腾讯实习生<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/龙场镇/" title="龙场镇">龙场镇<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/铜厂小学/" title="铜厂小学">铜厂小学<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wordpress/" title="wordpress">wordpress<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/腾讯实习日志/" title="腾讯实习日志">腾讯实习日志<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ZOJ/" title="ZOJ">ZOJ<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PAT/" title="PAT">PAT<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/计算机复试/" title="计算机复试">计算机复试<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/宋庆龄基金会/" title="宋庆龄基金会">宋庆龄基金会<sup>8</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="tanglei">tanglei</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
