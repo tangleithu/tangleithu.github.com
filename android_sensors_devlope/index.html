@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="null"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="中南大学|清华大学软件学院唐磊的博客,主攻软件工程,数据挖掘,这里记录了我的学习，生活和工作"><title>android传感器开发基础 | tanglei's blog|唐磊的个人博客</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/pure-min.css"><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">android传感器开发基础</h1><a id="logo" href="/.">tanglei's blog|唐磊的个人博客</a><p class="description">记录我的学习、生活、工作。</p></div><div id="nav-menu"><a href="/." class="current"><i class="icon-home"> 首页</i></a><a href="/archives/"><i class="icon-archive"> 归档</i></a><a href="/about/"><i class="icon-about"> 关于</i></a><a href="/atom.xml"><i class="icon-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">android传感器开发基础</h1><div class="post-meta">2011-02-25 | <span class="categories">分类于<a href="/categories/android/"> android</a></span></div><div class="post-content"><p>本文节选于机械工业出版社推出的《Android应用开发揭秘》一书，作者为杨丰盛。本书内容全面，详细讲解了Android框架、Android组件、用户界面开发、游戏开发、数据存储、多媒体开发和网络开发等基础知识，而且还深入阐述了传感器、语音识别、桌面组件开发、Android游戏引擎设计、Android应用优化、OpenGL等高级知识。另外，本书还全面介绍了如何利用原生的C/C++（NDK）和Python、Lua等脚本语言（Android Scripting Environment）来开发Android应用，并以迭代的方式重现了各种常用的Android应用和经典Android游戏的开发全过程。</p>
+<p><strong>第9章  Android特色开发</strong></p>
+<p>Android 是一个面向应用程序开发的丰富平台，它拥有许多具有吸引力的用户界面元素、数据管理和网络应用等优秀的功能。Android 还提供了很多颇具特色的接口。本章我们将分别介绍这些吸引开发者眼球的特色开发，主要包括：传感器系统（Sensor）、语音识别技术（RecognizerIntent）、Google Map和用来开发桌面的插件（Widget）。通过本章的学习，读者将对Android有一个更深入的了解，可以开发出一些有特色、有创意的应用程序。</p>
+<p><strong>9.1  传感器</strong></p>
+<p>据调查，2008年全球传感器销售额为506亿美元，预计到2010年全球传感器销售额可达600亿美元以上。调查显示，东欧、亚太区和加拿大成为传感器市场增长最快的地区，而美国、德国、日本依旧是传感器市场分布最大的地区。就世界范围而言，传感器市场增长最快的领域依旧是汽车，占第二位的是过程控制，当然现在也被广泛应用于通信。那么，传感器的定义是什么呢？有哪些种类的传感器呢？Android中提供了哪些传感器呢？</p>
+<p>1．传感器的定义</p>
+<p>传感器是一种物理装置或生物器官，能够探测、感受外界的信号、物理条件（如光、热、湿度）或化学组成（如烟雾），并将探知的信息传递给其他装置或器官。国家标准GB7665—87对传感器的定义是：“能感受规定的被测量并按照一定的规律转换成可用信号的器件或装置，通常由敏感元件和转换元件组成”。传感器是一种检测装置，能感受被测量的信息，并能将检测的感受到的信息，按一定规律变换成为电信号或其他所需形式的信息输出，以满足信息的传输、处理、存储、显示、记录和控制等要求。它是实现自动检测和自动控制的首要环节。</p>
+<p>2．传感器的种类</p>
+<p>可以从不同的角度对传感器进行分类：转换原理（传感器工作的基本物理或化学效应）；用途；输出信号类型以及制作材料和工艺等。</p>
+<p>根据工作原理，传感器可分为物理传感器和化学传感器两大类。</p>
+<p>物理传感器应用的是物理效应，诸如压电效应，磁致伸缩现象，离化、极化、热电、光电、磁电等效应。被测信号量的微小变化都将转换成电信号。</p>
+<p>化学传感器包括那些以化学吸附、电化学反应等现象为因果关系的传感器，被测信号量的微小变化也将转换成电信号。</p>
+<p>大多数传感器是以物理原理为基础运作的。化学传感器的技术问题较多，例如可靠性问题、规模生产的可能性、价格问题等，解决了这些问题，化学传感器的应用将会有巨大增长。而有些传感器既不能划分为物理类，也不能划分为化学类。</p>
+<p>3．Android中传感器的种类</p>
+<p>Google Android操作系统中内置了很多传感器，比如G1自带了一个非常实用的加速感应器（微型陀螺仪），有了它，G1手机就支持重力感应、方向判断等功能，在部分游戏或软件中可以自动识别屏幕的横屏、竖屏方向来改变屏幕显示布局。下面是Android中支持的几种传感器：</p>
+<p>Sensor.TYPE_ACCELEROMETER：加速度传感器。</p>
+<p>Sensor.TYPE_GYROSCOPE：陀螺仪传感器。</p>
+<p>Sensor.TYPE_LIGHT：亮度传感器。</p>
+<p>Sensor.TYPE_MAGNETIC_FIELD：地磁传感器。</p>
+<p>Sensor.TYPE_ORIENTATION：方向传感器。</p>
+<p>Sensor.TYPE_PRESSURE：压力传感器。</p>
+<p>Sensor.TYPE_PROXIMITY：近程传感器。</p>
+<p>Sensor.TYPE_TEMPERATURE：温度传感器。</p>
+<p>下面我们通过一个例子来分析Android中传感器的使用（具体实现参见本书所附代码：第9章\ Examples_09_01），这里分析的是方向传感器（TYPE_ORIENTATION）。</p>
+<p>4．Android 中传感器的功能</p>
+<p>要在Android中使用传感器，首先需要了解SensorManager和SensorEventListener。顾名思义，SensorManager就是所有传感器的一个综合管理类，包括了传感器的种类、采样率、精准度等。我们可以通过getSystemService方法来取得一个SensorManager对象。代码如下：</p>
+<p>SensorManager mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE); </p>
+<p>取得SensorManager对象之后，可以通过getSensorList方法来获得我们需要的传感器类型，保存到一个传感器列表中。通过如下代码可以得到一个方向传感器：</p>
+<p>List<sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ORIENTATION);</sensor></p>
+<p>要与传感器交互，应用程序必须注册以侦听与一个或多个传感器相关的活动。Android中提供了registerListener来注册一个传感器，并提供了unregisterListener来卸载一个传感器。registerListener方法包括3个参数：第1个参数，接收信号的Listener实例；第2个参数，想接收的传感器类型的列表（即上一步创建的List<sensor>对象）；第3个参数，接收频度。调用之后返回一个布尔值，true表示成功，false表示失败。当然，之后不再使用时，我们还需要卸载。代码如下：</sensor></p>
+<pre>&lt;cc class="java">
+//注册传感器  
+ Boolean  mRegisteredSensor = mSensorManager.registerListener(this, sensor,   
+ SensorManager.SENSOR_DELAY_FASTEST);  
+ //卸载传感器  
+ mSensorManager.unregisterListener(this);
+&lt;/cc></pre>
+
+<p>其中，SensorEventListener是使用传感器的核心部分，包括以下两个方法必须实现：</p>
+<p>onSensorChanged (SensorEvent event) 方法在传感器值更改时调用。该方法只由受此应用程序监视的传感器调用。该方法的参数包括一个SensorEvent对象，该对象主要包括一组浮点数，表示传感器获得的方向、加速度等信息。例如，以下代码可以取得其值：</p>
+<pre>&lt;cc class="java">float x = event.values[SensorManager.DATA_X];  
+float y = event.values[SensorManager.DATA_Y];  
+float z = event.values[SensorManager.DATA_Z];  &lt;/cc></pre>
+
+<p>onAccuracyChanged (Sensor sensor,int accuracy) 方法在传感器的精准度发生改变时调用。其参数包括两个整数：一个表示传感器，另一个表示该传感器新的准确值。</p>
+<p>具体实现如代码清单9-1所示。</p>
+<p>代码清单9-1 第9章\Examples_09_01\src\com\yarin\android\Examples_09_01\Activity01.java</p>
+<pre>&lt;cc class="java">
+public class Activity01 extends Activity implements SensorEventListener  
+{  
+    private boolean         mRegisteredSensor;  
+    //定义SensorManager  
+    private SensorManager       mSensorManager;  
+    public void onCreate(Bundle savedInstanceState)  
+    {  
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.main);  
+        mRegisteredSensor = false;  
+        //取得SensorManager实例  
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);  
+    }  
+    protected void onResume()  
+    {  
+        super.onResume();  
+        //接收SensorManager的一个列表(Listener)  
+        //这里我们指定类型为TYPE_ORIENTATION(方向传感器)  
+        List&lt;Sensor> sensors = mSensorManager.getSensorList  
+        (Sensor.TYPE_ORIENTATION);  
+        if (sensors.size() > 0)  
+        {  
+            Sensor sensor = sensors.get(0);  
+            //注册SensorManager  
+            //this->接收sensor的实例  
+            //接收传感器类型的列表  
+            //接收的频率  
+            mRegisteredSensor = mSensorManager.registerListener(this,   
+            sensor, SensorManager.SENSOR_DELAY_FASTEST);  
+        }  
+    }  
+    protected void onPause()  
+    {  
+        if (mRegisteredSensor)  
+        {  
+            //如果调用了registerListener  
+            //这里我们需要unregisterListener来卸载/取消注册  
+        mSensorManager.unregisterListener(this);  
+            mRegisteredSensor = false;  
+        }  
+        super.onPause();  
+    }  
+    //当精准度发生改变时  
+    //sensor->传感器  
+    //accuracy->精准度  
+    public void onAccuracyChanged(Sensor sensor, int accuracy)  
+    {  
+        //处理精准度改变  
+    }  
+    // 当传感器在被改变时触发  
+    public void onSensorChanged(SensorEvent event)  
+    {  
+        // 接收方向传感器的类型  
+        if (event.sensor.getType() == Sensor.TYPE_ORIENTATION)  
+        {  
+            //这里我们可以得到数据，然后根据需要来处理  
+            //由于模拟器上面无法测试效果，因此我们暂时不处理数据  
+            float x = event.values[SensorManager.DATA_X];  
+            float y = event.values[SensorManager.DATA_Y];  
+            float z = event.values[SensorManager.DATA_Z];  
+        }  
+    }  
+} 
+&lt;/cc></pre>
+
+<p>上面的例子中演示了如何获得方向传感器的方向、加速度等信息，我们可以根据得到的数值与上一次得到的数值之间的关系来进行需要的操作。SensorManager中还有很多常量和一些常用的方法，如下：</p>
+<p>getDefaultSensor：得到默认的传感器对象。</p>
+<p>getInclination：得到地磁传感器倾斜角的弧度值。</p>
+<p>getOrientation：得到设备旋转的方向。</p>
+<p>getSensorList：得到指定传感器的列表。</p>
+</div><div class="tags"><a href="/tags/android/">android</a><a href="/tags/传感器/">传感器</a></div><div class="post-nav"><a href="/4g-memery//" class="pre"><i class="icon-previous">我的Y430升4G内存啦</i></a><a href="/defy_sensors//" class="next">Defy传感器列表<i class="icon-next"></i></a></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="sitesearch" value="http://www.tanglei.name"/></form></div><div class="widget"><div class="widget-title">分类</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux-amp-Ubuntu/">Linux&amp;Ubuntu</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MyLife/">MyLife</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SoftwareEngineering/">SoftwareEngineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/coding小工具/">coding小工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/wordpress/">wordpress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/业界动态/">业界动态</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/名人名事/">名人名事</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/实习那些事儿/">实习那些事儿</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作那些事儿/">工作那些事儿</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/开开眼界/">开开眼界</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/我不会算法/">我不会算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/我做站长/">我做站长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库应用/">数据库应用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/敲敲代码/">敲敲代码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/清华大学/">清华大学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/玩玩手机/">玩玩手机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动领域/">移动领域</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/经验技巧/">经验技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络文摘/">网络文摘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机图形学/">计算机图形学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/贵州支教行/">贵州支教行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件0804/">软件0804</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件体系结构/">软件体系结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件学院/">软件学院</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件度量及其应用/">软件度量及其应用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件配置管理/">软件配置管理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件项目管理/">软件项目管理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软考/">软考</a></li></ul></div><div class="widget"><div class="widget-title">标签</div><div class="tagcloud"><a href="/tags/青春岁月/" style="font-size: 15px;">青春岁月</a> <a href="/tags/latex/" style="font-size: 15px;">latex</a> <a href="/tags/latex-suite/" style="font-size: 15px;">latex-suite</a> <a href="/tags/mac-osx/" style="font-size: 15px;">mac osx</a> <a href="/tags/vim/" style="font-size: 15px;">vim</a> <a href="/tags/插件/" style="font-size: 15px;">插件</a> <a href="/tags/旅游/" style="font-size: 15px;">旅游</a> <a href="/tags/玩遍世界/" style="font-size: 15px;">玩遍世界</a> <a href="/tags/越南旅游/" style="font-size: 15px;">越南旅游</a> <a href="/tags/回忆录/" style="font-size: 15px;">回忆录</a> <a href="/tags/年终总结/" style="font-size: 15px;">年终总结</a> <a href="/tags/总结/" style="font-size: 15px;">总结</a> <a href="/tags/android/" style="font-size: 15px;">android</a> <a href="/tags/自动/" style="font-size: 15px;">自动</a> <a href="/tags/飞行模式/" style="font-size: 15px;">飞行模式</a> <a href="/tags/leetcode/" style="font-size: 15px;">leetcode</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/作弊/" style="font-size: 15px;">作弊</a> <a href="/tags/神经猫/" style="font-size: 15px;">神经猫</a> <a href="/tags/debug/" style="font-size: 15px;">debug</a> <a href="/tags/mac/" style="font-size: 15px;">mac</a> <a href="/tags/xcode/" style="font-size: 15px;">xcode</a> <a href="/tags/微软秋令营/" style="font-size: 15px;">微软秋令营</a> <a href="/tags/换行符/" style="font-size: 15px;">换行符</a> <a href="/tags/缓冲区/" style="font-size: 15px;">缓冲区</a> <a href="/tags/跨平台/" style="font-size: 15px;">跨平台</a> <a href="/tags/effective-c/" style="font-size: 15px;">effective c++</a> <a href="/tags/传参/" style="font-size: 15px;">传参</a> <a href="/tags/性能优化/" style="font-size: 15px;">性能优化</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/ipv6/" style="font-size: 15px;">ipv6</a> <a href="/tags/校园网/" style="font-size: 15px;">校园网</a> <a href="/tags/百度云管家/" style="font-size: 15px;">百度云管家</a> <a href="/tags/百度网盘/" style="font-size: 15px;">百度网盘</a> <a href="/tags/APACHE/" style="font-size: 15px;">APACHE</a> <a href="/tags/config/" style="font-size: 15px;">config</a> <a href="/tags/favicon-ico/" style="font-size: 15px;">favicon.ico</a> <a href="/tags/c/" style="font-size: 15px;">c++</a> <a href="/tags/class/" style="font-size: 15px;">class</a> <a href="/tags/OOP/" style="font-size: 15px;">OOP</a> <a href="/tags/struct/" style="font-size: 15px;">struct</a> <a href="/tags/基础/" style="font-size: 15px;">基础</a> <a href="/tags/whois/" style="font-size: 15px;">whois</a> <a href="/tags/纳网/" style="font-size: 15px;">纳网</a> <a href="/tags/网络营销/" style="font-size: 15px;">网络营销</a> <a href="/tags/隐私/" style="font-size: 15px;">隐私</a> <a href="/tags/骗子/" style="font-size: 15px;">骗子</a> <a href="/tags/怀柔/" style="font-size: 15px;">怀柔</a> <a href="/tags/水长城/" style="font-size: 15px;">水长城</a> <a href="/tags/清明/" style="font-size: 15px;">清明</a> <a href="/tags/游记/" style="font-size: 15px;">游记</a> <a href="/tags/cpp/" style="font-size: 15px;">cpp</a> <a href="/tags/RVO/" style="font-size: 15px;">RVO</a> <a href="/tags/拷贝构造函数/" style="font-size: 15px;">拷贝构造函数</a> <a href="/tags/返回值优化/" style="font-size: 15px;">返回值优化</a> <a href="/tags/bug/" style="font-size: 15px;">bug</a> <a href="/tags/FPU/" style="font-size: 15px;">FPU</a> <a href="/tags/x64/" style="font-size: 15px;">x64</a> <a href="/tags/x86/" style="font-size: 15px;">x86</a> <a href="/tags/汇编/" style="font-size: 15px;">汇编</a> <a href="/tags/浮点乘法/" style="font-size: 15px;">浮点乘法</a> <a href="/tags/浮点数/" style="font-size: 15px;">浮点数</a> <a href="/tags/误差/" style="font-size: 15px;">误差</a> <a href="/tags/3次握手/" style="font-size: 15px;">3次握手</a> <a href="/tags/TCP-IP/" style="font-size: 15px;">TCP/IP</a> <a href="/tags/tcpdump/" style="font-size: 15px;">tcpdump</a> <a href="/tags/windump/" style="font-size: 15px;">windump</a> <a href="/tags/计算机网络/" style="font-size: 15px;">计算机网络</a> <a href="/tags/php图片水印/" style="font-size: 15px;">php图片水印</a> <a href="/tags/QQ空间/" style="font-size: 15px;">QQ空间</a> <a href="/tags/图片拼接/" style="font-size: 15px;">图片拼接</a> <a href="/tags/魔力日志/" style="font-size: 15px;">魔力日志</a> <a href="/tags/Android-4-2/" style="font-size: 15px;">Android 4.2</a> <a href="/tags/AutoSwitcher/" style="font-size: 15px;">AutoSwitcher</a> <a href="/tags/WRITE-SECURE-SETTINGS/" style="font-size: 15px;">WRITE_SECURE_SETTINGS</a> <a href="/tags/没有权限/" style="font-size: 15px;">没有权限</a> <a href="/tags/sqlite/" style="font-size: 15px;">sqlite</a> <a href="/tags/安全/" style="font-size: 15px;">安全</a> <a href="/tags/用户体验/" style="font-size: 15px;">用户体验</a> <a href="/tags/百度/" style="font-size: 15px;">百度</a> <a href="/tags/QT/" style="font-size: 15px;">QT</a> <a href="/tags/windows/" style="font-size: 15px;">windows</a> <a href="/tags/COM接口/" style="font-size: 15px;">COM接口</a> <a href="/tags/helloWorld/" style="font-size: 15px;">helloWorld</a> <a href="/tags/tlb文件/" style="font-size: 15px;">tlb文件</a> <a href="/tags/GPU/" style="font-size: 15px;">GPU</a> <a href="/tags/opengl/" style="font-size: 15px;">opengl</a> <a href="/tags/经验技巧/" style="font-size: 15px;">经验技巧</a> <a href="/tags/计算机图形学/" style="font-size: 15px;">计算机图形学</a> <a href="/tags/远程控制/" style="font-size: 15px;">远程控制</a> <a href="/tags/远程桌面/" style="font-size: 15px;">远程桌面</a> <a href="/tags/系统架构设计师/" style="font-size: 15px;">系统架构设计师</a> <a href="/tags/证书登记/" style="font-size: 15px;">证书登记</a> <a href="/tags/软件设计师/" style="font-size: 15px;">软件设计师</a> <a href="/tags/软考/" style="font-size: 15px;">软考</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/matlab/" style="font-size: 15px;">matlab</a></div></div><div class="widget"><div class="widget-title">最新文章</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/jquery-ajax-post-to-download-a-file/">jQuery Ajax请求下载文件资源</a></li><li class="post-list-item"><a class="post-list-link" href="/travel-to-northwest-of-China/">毕业旅行之大西北游</a></li><li class="post-list-item"><a class="post-list-link" href="/codecolorer-adapted-to-highlight/">将代码高亮插件codecolorer替换为highlight</a></li><li class="post-list-item"><a class="post-list-link" href="/binding-domain-to-plugin-of-mobile-theme/">给手机主题插件Wptouch绑定单独的域名</a></li><li class="post-list-item"><a class="post-list-link" href="/share-beamer-with-tsinghua-theme/">分享一个清华主题的beamer模版</a></li><li class="post-list-item"><a class="post-list-link" href="/install-vim-latex-suite-in-mac-osx//">Mac下安装使用vim插件latex-suite</a></li><li class="post-list-item"><a class="post-list-link" href="/travel-to-vietnam//">越南10日游记</a></li><li class="post-list-item"><a class="post-list-link" href="/summary-of-year-2014//">2014年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/android-airplanemode-auto-switcher-v2//">飞行模式助手</a></li><li class="post-list-item"><a class="post-list-link" href="/leetcode-summary//">leetcode总结</a></li></ul></div><div class="widget"><div class="widget-title">友情链接</div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><div id="footer">© <a href="/." rel="nofollow">tanglei's blog|唐磊的个人博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div><a id="rocket" href="#top" class="show"></a><script src="/js/jquery.min.js" type="text/javascript"></script>
+<script src="/js/totop.js" type="text/javascript"></script><script src="/js/fancybox.pack.js" type="text/javascript"></script>
+<script src="/js/jquery.fancybox.js" type="text/javascript"></script><link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css"></div></body></html>

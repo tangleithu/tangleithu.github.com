@@ -1,0 +1,505 @@
+<!DOCTYPE html><html lang="null"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="中南大学|清华大学软件学院唐磊的博客,主攻软件工程,数据挖掘,这里记录了我的学习，生活和工作"><title>python中decorator详解 | tanglei's blog|唐磊的个人博客</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/pure-min.css"><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">python中decorator详解</h1><a id="logo" href="/.">tanglei's blog|唐磊的个人博客</a><p class="description">记录我的学习、生活、工作。</p></div><div id="nav-menu"><a href="/." class="current"><i class="icon-home"> 首页</i></a><a href="/archives/"><i class="icon-archive"> 归档</i></a><a href="/about/"><i class="icon-about"> 关于</i></a><a href="/atom.xml"><i class="icon-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">python中decorator详解</h1><div class="post-meta">2012-07-24 | <span class="categories">分类于<a href="/categories/python/"> python</a></span></div><div class="post-content"><p>前面写python的AOP解决方案时提到了decorator，这篇文章就详细的来整理下python的装饰器——decorator。</p>
+<h3 id="python_u4E2D_u7684_u51FD_u6570_u5373objects"><a href="#python_u4E2D_u7684_u51FD_u6570_u5373objects" class="headerlink" title="python中的函数即objects"></a>python中的函数即objects</h3><p>一步一步来，先了解下python中的函数。</p>
+<pre>&lt;cc class="python">
+def shout(word='hello,world'):
+    return word.capitalize() + '!'
+
+print shout()
+#输出：Hello,world!
+#跟其他对象一样，你同样可以将函数对象赋值给其他变量
+scream = shout
+#注意，shout后面没有用括号()，用括号就是调用了shout方法，这里仅仅是将shout的函数对象复制给scream。
+#意味着，你可以通过scream调用shout方法。
+print scream()
+#同样输出：Hello,world!
+#此外，你将代表函数变量的shout删除，shout现在失效，但scream同样可以调用
+
+del shout
+print shout()
+#会抛异常
+#Traceback (most recent call last):
+#  File "S:\decorator.py", line 18, in &lt;module>
+#    print shout()
+#NameError: name 'shout' is not defined
+
+#（当然得注释掉前面的两句代码，或者try catch一下）
+print scream()
+#同样输出：Hello,world!
+&lt;/cc></pre>
+
+<p>python中函数还可以嵌套，即将函数定义在另一个函数里面。例如</p>
+<pre>&lt;cc class="python">
+def talk():
+
+    def whisper(word='hello'):
+        return word.lower() + '...'
+
+    #在函数talk里面定义whisper函数，马上就可以用了
+    print whisper()
+#调用talk，里面的whisper()也被调用了
+talk()
+#输出：hello...
+#直接调用whisper可不行。
+try:
+    print whisper()
+except Exception ,e :
+    print e
+#输出：name 'whisper' is not defined
+&lt;/cc></pre>
+
+<p>从上面的例子我们已经可以得到，函数可以被赋值给另外的变量，也能在另一个函数里面定义函数。可以推断函数也能返回给另外的函数或者作为参数传递给其他函数。看下面的代码：</p>
+<pre>&lt;cc class="python">
+def getTalk(type='shout'):
+    #函数里面定义另外两个函数
+    def shout(word='hello,world'):
+        return word.capitalize() + '!'
+    def whisper(word='hello'):
+        return word.lower() + '...'
+
+    #根据传入的参数，返回相应的函数对象
+    #注意，没用(),仅仅返回函数对象，并没有调用
+    if type == 'shout':
+        return shout
+    else:
+        return whisper
+
+talk = getTalk()
+print talk
+#输出：&lt;function shout at 0x011FCA70>
+print talk() #调用函数
+#输出：Hello,world!
+#同样可以这样直接调用
+print getTalk('whisper')()
+#输出：hello...
+
+#既然能return一个函数，当然也可以将函数作为参数传递给其他的函数
+def doBefore(func):
+    print 'before calling the func'
+    print func()#调用
+
+doBefore(talk)#将前面通过getTalk()得到的函数对象传递给doBefore
+#输出：
+#before calling the func
+#Hello,world!
+&lt;/cc></pre>
+
+<p>&nbsp;</p>
+<h3 id="u521D_u8BC6decorator"><a href="#u521D_u8BC6decorator" class="headerlink" title="初识decorator"></a>初识decorator</h3><p>明白以上的这些，将有助于理解装饰器decorator，其实装饰器decorator就是在不改变函数的本身情况下在函数执行的前后包装另外的代码来改变函数的具体表现行为。有点儿AOP的味道。继续从代码来解释。</p>
+<pre>&lt;cc class="python">
+# 装饰器就是一个将其他函数(也就是被装饰的函数)作为参数的一个function
+def my_shiny_new_decorator(a_function_to_decorate):
+
+    # 在这个装饰器函数里面用另外一个函数来包装原函数，
+    # 即在调用原来的函数前后分别执行其他的操作.
+    def the_wrapper_around_the_original_function():
+
+        # 这里放一些你希望在原来的函数执行之前的代码，例如log、身份验证等
+        print "Before the function runs"
+
+        # 调用原函数本身，注意有()
+        a_function_to_decorate()
+
+        #同理，这里放一些你希望在原来的函数执行之后的代码，例如释放资源等
+        print "After the function runs"
+
+    # 注意，此时，函数 "a_function_to_decorate"并没有被执行.
+    # 此时将刚刚创建的用来包装原函数的函数返回
+    return the_wrapper_around_the_original_function
+
+# 假设你定义了一个函数，并良好实现，也觉得perfect了。且发誓以后并不准备改动这段代码
+def a_stand_alone_function():
+    print "I am a stand alone function, don't you dare modify me"
+
+a_stand_alone_function() 
+#输出: I am a stand alone function, don't you dare modify me
+
+# 有时候，作为coder，并不是你不动代码就能不动的。PM此时另外又来了个需求，让你在之前
+#的基础上再加点XX功能，苦逼的程序猿乖乖的改吧。不过有了装饰器，你能满足PM的需求，又能不违背
+#当初许下的不改变原有代码的誓言。仅仅需要将此函数拿去重新装饰一下即可。如下：
+a_stand_alone_function_decorated = my_shiny_new_decorator(a_stand_alone_function)
+a_stand_alone_function_decorated()
+#输出:
+#Before the function runs
+#I am a stand alone function, don't you dare modify me
+#After the function runs
+&lt;/cc></pre>
+
+<p>如果不想调用a_stand_alone_function_decorated()这个方法，还是钟情于以前的那个名字，方法也简单。重写下a_stand_alone_function方法即可。即：</p>
+<pre>&lt;cc>a_stand_alone_function = my_shiny_new_decorator(a_stand_alone_function)
+a_stand_alone_function()
+#输出还是一样样&lt;/cc></pre>
+
+<h3 id="decorator_u63ED_u79D8"><a href="#decorator_u63ED_u79D8" class="headerlink" title="decorator揭秘"></a>decorator揭秘</h3><p>上面的代码就是装饰器的体现。现在用python中专门的decorator语法就是酱紫滴：</p>
+<pre>&lt;cc class="python">
+@my_shiny_new_decorator
+def another_stand_alone_function():
+    print "Leave me alone"
+
+another_stand_alone_function()
+#Before the function runs
+#Leave me alone
+#After the function runs
+&lt;/cc></pre>
+
+<p>简单来说，@my_shiny_new_decorator就是another_stand_alone_function = my_shiny_new_decorator(another_stand_alone_function)的缩写。</p>
+<p>python中的装饰器其实是GoF中的装饰模式的一个变种。像迭代器iterators也是一种设计模式。</p>
+<p>装饰器还可以同时使用多个。</p>
+<pre>&lt;cc class="python">
+def bread(func):
+    def wrapper():
+        print "&lt;/''''''\>"
+        func()
+        print "&lt;\______/>"
+    return wrapper
+
+def ingredients(func):
+    def wrapper():
+        print "#tomatoes#"
+        func()
+        print "~salad~"
+    return wrapper
+
+def sandwich(food="--ham--"):
+    print food
+
+sandwich()
+#输出: --ham--
+sandwich = bread(ingredients(sandwich))
+sandwich()
+#输出:
+#&lt;/''''''\>
+# #tomatoes#
+# --ham--
+# ~salad~
+#&lt;\______/>
+
+#用python中的decorator语法就是：
+@bread
+@ingredients
+def sandwich(food="--ham--"):
+    print food
+
+sandwich()
+#输出:
+#&lt;/''''''\>
+# #tomatoes#
+# --ham--
+# ~salad~
+#&lt;\______/>
+#注意@的顺序。谁在最下面，睡最先被调用。
+#下面的sandwich就奇怪了哈，把salad等放在盘子底下
+@ingredients
+@bread
+def strange_sandwich(food="--ham--"):
+    print food
+
+strange_sandwich()
+#输出:
+##tomatoes#
+#&lt;/''''''\>
+# --ham--
+#&lt;\______/>
+# ~salad~
+&lt;/cc></pre>
+
+<h3 id="u88AB_u88C5_u9970_u7684_u51FD_u6570_u4F20_u53C2"><a href="#u88AB_u88C5_u9970_u7684_u51FD_u6570_u4F20_u53C2" class="headerlink" title="被装饰的函数传参"></a>被装饰的函数传参</h3><p>仅仅在包装的函数上将参数传递过来即可。</p>
+<pre>&lt;cc class="python">
+def a_decorator_passing_arguments(function_to_decorate):
+    def a_wrapper_accepting_arguments(arg1, arg2):
+        print "传进来的参数是：", arg1, arg2
+        function_to_decorate(arg1, arg2)
+    return a_wrapper_accepting_arguments
+
+# 既然你调用了装饰过后的函数，你也就调用了包装器，函数也就自然传递到了包装器。
+
+@a_decorator_passing_arguments
+def print_full_name(first_name, last_name):
+    print "My name is", first_name, last_name
+
+print_full_name("lei", "tang")
+# 输出:
+#传进来的参数是： lei tang
+#My name is lei tang
+&lt;/cc></pre>
+
+<h3 id="u88C5_u9970_u7C7B_u4E2D_u7684_u65B9_u6CD5"><a href="#u88C5_u9970_u7C7B_u4E2D_u7684_u65B9_u6CD5" class="headerlink" title="装饰类中的方法"></a>装饰类中的方法</h3><p>python中的方法和函数差不多，只不过类中的方法的第一个参数是当前对象的引用self。</p>
+<pre>&lt;cc class="python">
+def method_friendly_decorator(method_to_decorate):
+    def wrapper(self, lie):
+        lie = lie - 3 #减少3
+        return method_to_decorate(self, lie)
+    return wrapper
+
+
+class Lucy(object):
+
+    def __init__(self):
+        self.age = 32
+
+    @method_friendly_decorator
+    def sayYourAge(self, lie):
+        print "I am %s, what did you think?" % (self.age + lie)
+
+l = Lucy()
+l.sayYourAge(-3)#32-3  -3(wrapper中还减了3岁)=26
+#输出: I am 26, what did you think?
+&lt;/cc></pre>
+
+<p>在不知道参数个数的情况下有一种更加通用的传参方法，就是用*args, **kwargs。*args代表没有给定默认值的参数列表(arg1,arg2,……)，**kwwars代表有给定默认值(arg1=val1,arg2=val2,……)</p>
+<pre>&lt;cc class="python">
+def a_decorator_passing_arbitrary_arguments(function_to_decorate):
+    # 包装器接受任意参数
+    def a_wrapper_accepting_arbitrary_arguments(*args, **kwargs):
+        print "Do I have args?:"
+        print args
+        print kwargs
+        #*args代表没有给定默认值的参数列表(arg1,arg2,……)，**kwwars代表有给定默认值(arg1=val1,arg2=val2,……)
+        function_to_decorate(*args, **kwargs)
+    return a_wrapper_accepting_arbitrary_arguments
+
+@a_decorator_passing_arbitrary_arguments
+def function_with_no_argument():
+    print "Python is cool, no argument here."
+
+function_with_no_argument()
+#输出
+#Do I have args?:
+#()
+#{}
+#Python is cool, no argument here.
+
+@a_decorator_passing_arbitrary_arguments
+def function_with_arguments(a, b, c):
+    print a, b, c
+
+function_with_arguments(1,2,3)
+#输出
+#Do I have args?:
+#(1, 2, 3)
+#{}
+#1 2 3 
+
+@a_decorator_passing_arbitrary_arguments
+def function_with_named_arguments(a, b, c, platypus="Why not ?"):
+    print "Do %s, %s and %s like platypus? %s" %(a, b, c, platypus)
+
+function_with_named_arguments("Bill", "Linus", "Steve", platypus="Indeed!")
+#输出
+#Do I have args ? :
+#('Bill', 'Linus', 'Steve')
+#{'platypus': 'Indeed!'}
+#Do Bill, Linus and Steve like platypus? Indeed!
+
+class Mary(object):
+
+    def __init__(self):
+        self.age = 31
+
+    @a_decorator_passing_arbitrary_arguments
+    def sayYourAge(self, lie=-3): # You can now add a default value
+        print "I am %s, what did you think ?" % (self.age + lie)
+
+m = Mary()
+m.sayYourAge(8)
+m.sayYourAge(lie=-8)#注意看下面print出的**kwargs区别
+#输出
+#Do I have args?:
+#(&lt;__main__.Mary object at 0x01228430>, 8)
+#{}
+#I am 39, what did you think ?
+#Do I have args?:
+#(&lt;__main__.Mary object at 0x01228430>,)
+#{'lie': -8}
+#I am 23, what did you think ?
+
+&lt;/cc></pre>
+
+<h3 id="u5C06_u53C2_u6570_u4F20_u7ED9_u88C5_u9970_u51FD_u6570"><a href="#u5C06_u53C2_u6570_u4F20_u7ED9_u88C5_u9970_u51FD_u6570" class="headerlink" title="将参数传给装饰函数"></a>将参数传给装饰函数</h3><p>因为装饰函数本身要将一个函数作为参数传递进来，那怎么把参数传给装饰函数呢？其实不能直接将函数传递给装饰函数。但也有解决方案，先看下面的例子</p>
+<pre>&lt;cc class="python">
+# 装饰器函数也是function
+def my_decorator(func):
+    print "I am a ordinary function"
+    def wrapper():
+        print "I am function returned by the decorator"
+        func()
+    return wrapper
+
+def lazy_function():
+    print "zzzzzzzz"
+
+decorated_function = my_decorator(lazy_function)
+#输出: I am a ordinary function
+#注意此时，被装饰的函数并没有调用。
+
+#同样，用@的方式也得到相同的结果
+@my_decorator
+def lazy_function():
+    print "zzzzzzzz"
+
+#输出:  I am a ordinary function
+#当@的时候，就告诉python去调用装饰器函数。这个@后的标签很重要，直接指向装饰器
+&lt;/cc></pre>
+
+<pre>&lt;cc class="python">
+def decorator_maker():
+
+    print "我是构造装饰器的工人，当你让我构造装饰器时，我被执行一次 "
+
+    def my_decorator(func):
+
+        print "我是装饰器，当你装饰一个函数式，我就被执行"
+
+        def wrapped():
+            print ("我是包装被装饰函数的包装器，当被装饰函数调用时，我也被执行，"
+                  "作为包装器，我的职责是将被装饰的函数结果返回")
+            return func()
+
+        print "作为装饰器，我将返回包装器函数"
+
+        return wrapped
+
+    print "作为构造装饰器的工人，我得返回装饰器"
+    return my_decorator
+
+# 构造装饰器,赋值给new_decorator
+new_decorator = decorator_maker()       
+#输出:
+#我是构造装饰器的工人，当你让我构造装饰器时，我被执行一次 
+#作为构造装饰器的工人，我得返回装饰器
+print(0)
+
+# 被装饰的函数
+def decorated_function():
+    print "我是被装饰的函数"
+
+decorated_function = new_decorator(decorated_function)
+#输出:
+#我是装饰器，当你装饰一个函数式，我就被执行
+#作为装饰器，我将返回包装器函数
+print(1)
+#调用被装饰的函数
+decorated_function()
+#输出:
+#我是包装被装饰函数的包装器，当被装饰函数调用时，我也被执行作为包装器，我的职责是将被装饰的函数结果返回
+#我是被装饰的函数
+&lt;/cc></pre>
+
+<p>用标记间隔下，整个输出如下：</p>
+<pre>&lt;cc class="python">
+我是构造装饰器的工人，当你让我构造装饰器时，我被执行一次
+作为构造装饰器的工人，我得返回装饰器
+0
+我是装饰器，当你装饰一个函数式，我就被执行
+作为装饰器，我将返回包装器函数
+1
+我是包装被装饰函数的包装器，当被装饰函数调用时，我也被执行，作为包装器，我的职责是将被装饰的函数结果返回
+我是被装饰的函数
+&lt;/cc></pre>
+
+<p>省略中间步骤，如下</p>
+<pre>&lt;cc class="python">
+#省略中间步骤，如下
+def decorated_function():
+    print "我是被装饰的函数"
+decorated_function = decorator_maker()(decorated_function)
+#我是构造装饰器的工人，当你让我构造装饰器时，我被执行一次 
+#作为构造装饰器的工人，我得返回装饰器
+#我是装饰器，当你装饰一个函数式，我就被执行
+#作为装饰器，我将返回包装器函数
+
+# 最后调用:
+decorated_function()    
+#输出:
+#我是包装被装饰函数的包装器，当被装饰函数调用时，我也被执行，作为包装器，我的职责是将被装饰的函数结果返回
+#我是被装饰的函数
+&lt;/cc></pre>
+
+<p>可以更短</p>
+<pre>&lt;cc class="python">
+@decorator_maker()
+def decorated_function():
+    print "我是被装饰的函数"
+#输出:
+#我是构造装饰器的工人，当你让我构造装饰器时，我被执行一次 
+#我是装饰器，当你装饰一个函数式，我就被执行
+#作为装饰器，我将返回包装器函数
+
+#最终: 
+decorated_function()    
+#输出:
+#我是包装被装饰函数的包装器，当被装饰函数调用时，我也被执行，作为包装器，我的职责是将被装饰的函数结果返回
+#我是被装饰的函数
+&lt;/cc></pre>
+
+<p>上面@后面是一个函数调用，调用函数当然可以传递参数。就是在上面的@decorator_maker()括号里面加上参数而已。</p>
+<pre>&lt;cc class="python">
+# -*- coding: utf-8 -*-
+def decorator_maker_with_arguments(decorator_arg1, decorator_arg2):
+
+    print "我构造装饰器，并接受参数:", decorator_arg1, decorator_arg2
+
+    def my_decorator(func):
+
+        print "我是装饰器，我接收到了参数:", decorator_arg1, decorator_arg2
+
+        # 别混淆了，装饰器参数和函数参数
+        def wrapped(function_arg1, function_arg2) :
+            print ("我是包装器,我能看到所有的变量.\n"
+                  "\t- 来自装饰器: {0} {1}\n"
+                  "\t- 来自函数调用: {2} {3}\n"
+                  "我可以传递给被装饰的函数"
+                  .format(decorator_arg1, decorator_arg2,
+                          function_arg1, function_arg2))
+            return func(function_arg1, function_arg2)
+
+        return wrapped
+
+    return my_decorator
+
+@decorator_maker_with_arguments("Leonard", "Sheldon")
+def decorated_function_with_arguments(function_arg1, function_arg2):
+    print ("被装饰的函数，我只能看到自己的参数: {0}"
+           " {1}".format(function_arg1, function_arg2))
+
+decorated_function_with_arguments("Lily", "Lucy")
+
+#输出
+#我构造装饰器，并接受参数: Leonard Sheldon
+#我是装饰器，我接收到了参数: Leonard Sheldon
+#我是包装器,我能看到所有的变量.
+#    - 来自装饰器: Leonard Sheldon
+#    - 来自函数调用: Lily Lucy
+#我可以传递给被装饰的函数
+#被装饰的函数，我只能看到自己的参数: Lily Lucy
+
+
+c1 = "Penny"
+c2 = "Pony"
+
+@decorator_maker_with_arguments("Leonard", c1)
+def decorated_function_with_arguments(function_arg1, function_arg2):
+    print ("被装饰的函数，我只能看到自己的参数: {0} {1}".format(function_arg1, function_arg2))
+
+decorated_function_with_arguments(c2, "Lucy")
+#我构造装饰器，并接受参数: Leonard Penny
+#我是装饰器，我接收到了参数: Leonard Penny
+#我是包装器,我能看到所有的变量.
+#    - 来自装饰器: Leonard Penny
+#    - 来自函数调用: Pony Lucy
+#我可以传递给被装饰的函数
+#被装饰的函数，我只能看到自己的参数: Pony Lucy
+&lt;/cc></pre>
+
+<p>通过这种方案就可以实现往装饰器里面传递参数了，甚至可以用上面的*args, *<em>kwargs来传递任意参数。值得注意的是<em>*装饰器只被调用了一次，当python在import当前脚本的时候调用。</em></em>不能在后面再动态的设置传递的参数，当import xx的时候，被decorated的函数已经被装饰好了，不能再变了。</p>
+<h3 id="decorator_u6CE8_u610F_u4E8B_u9879"><a href="#decorator_u6CE8_u610F_u4E8B_u9879" class="headerlink" title="decorator注意事项"></a>decorator注意事项</h3><ul>
+<li>python2.4及其以上版本有此功能</li>
+<li>装饰器使代码执行的效率变低了</li>
+<li>一旦一个函数已经被装饰好了，就定下来了，不能变了</li>
+<li>装饰器decorator在函数之间包装起来了，比较难debug</li>
+</ul>
+<p>python自己也提供了几个装饰器，property，staticmethod等。Django用装饰器来管理缓存和视图权限，能够把python的decorator玩透，将会帮你解决很多事情。</p>
+<p>&nbsp;</p>
+<p>参考资料(其实就是翻译了下)：<a href="http://stackoverflow.com/questions/739654/understanding-python-decorators" target="_blank">stackoverflow</a></p>
+</div><div class="tags"><a href="/tags/AOP/">AOP</a><a href="/tags/decorator/">decorator</a><a href="/tags/python/">python</a><a href="/tags/装饰器/">装饰器</a></div><div class="post-nav"><a href="/github-with-octopress//" class="pre"><i class="icon-previous">也试试github+octopress</i></a><a href="/aop-in-python//" class="next">python中的AOP<i class="icon-next"></i></a></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="sitesearch" value="http://www.tanglei.name"/></form></div><div class="widget"><div class="widget-title">分类</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux-amp-Ubuntu/">Linux&amp;Ubuntu</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MyLife/">MyLife</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SoftwareEngineering/">SoftwareEngineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/coding小工具/">coding小工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/wordpress/">wordpress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/业界动态/">业界动态</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/名人名事/">名人名事</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/实习那些事儿/">实习那些事儿</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作那些事儿/">工作那些事儿</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/开开眼界/">开开眼界</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/我不会算法/">我不会算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/我做站长/">我做站长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库应用/">数据库应用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/敲敲代码/">敲敲代码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/清华大学/">清华大学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/玩玩手机/">玩玩手机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动领域/">移动领域</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/经验技巧/">经验技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络文摘/">网络文摘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机图形学/">计算机图形学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/贵州支教行/">贵州支教行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件0804/">软件0804</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件体系结构/">软件体系结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件学院/">软件学院</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件度量及其应用/">软件度量及其应用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件配置管理/">软件配置管理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件项目管理/">软件项目管理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软考/">软考</a></li></ul></div><div class="widget"><div class="widget-title">标签</div><div class="tagcloud"><a href="/tags/青春岁月/" style="font-size: 15px;">青春岁月</a> <a href="/tags/latex/" style="font-size: 15px;">latex</a> <a href="/tags/latex-suite/" style="font-size: 15px;">latex-suite</a> <a href="/tags/mac-osx/" style="font-size: 15px;">mac osx</a> <a href="/tags/vim/" style="font-size: 15px;">vim</a> <a href="/tags/插件/" style="font-size: 15px;">插件</a> <a href="/tags/旅游/" style="font-size: 15px;">旅游</a> <a href="/tags/玩遍世界/" style="font-size: 15px;">玩遍世界</a> <a href="/tags/越南旅游/" style="font-size: 15px;">越南旅游</a> <a href="/tags/回忆录/" style="font-size: 15px;">回忆录</a> <a href="/tags/年终总结/" style="font-size: 15px;">年终总结</a> <a href="/tags/总结/" style="font-size: 15px;">总结</a> <a href="/tags/android/" style="font-size: 15px;">android</a> <a href="/tags/自动/" style="font-size: 15px;">自动</a> <a href="/tags/飞行模式/" style="font-size: 15px;">飞行模式</a> <a href="/tags/leetcode/" style="font-size: 15px;">leetcode</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/作弊/" style="font-size: 15px;">作弊</a> <a href="/tags/神经猫/" style="font-size: 15px;">神经猫</a> <a href="/tags/debug/" style="font-size: 15px;">debug</a> <a href="/tags/mac/" style="font-size: 15px;">mac</a> <a href="/tags/xcode/" style="font-size: 15px;">xcode</a> <a href="/tags/微软秋令营/" style="font-size: 15px;">微软秋令营</a> <a href="/tags/换行符/" style="font-size: 15px;">换行符</a> <a href="/tags/缓冲区/" style="font-size: 15px;">缓冲区</a> <a href="/tags/跨平台/" style="font-size: 15px;">跨平台</a> <a href="/tags/effective-c/" style="font-size: 15px;">effective c++</a> <a href="/tags/传参/" style="font-size: 15px;">传参</a> <a href="/tags/性能优化/" style="font-size: 15px;">性能优化</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/ipv6/" style="font-size: 15px;">ipv6</a> <a href="/tags/校园网/" style="font-size: 15px;">校园网</a> <a href="/tags/百度云管家/" style="font-size: 15px;">百度云管家</a> <a href="/tags/百度网盘/" style="font-size: 15px;">百度网盘</a> <a href="/tags/APACHE/" style="font-size: 15px;">APACHE</a> <a href="/tags/config/" style="font-size: 15px;">config</a> <a href="/tags/favicon-ico/" style="font-size: 15px;">favicon.ico</a> <a href="/tags/c/" style="font-size: 15px;">c++</a> <a href="/tags/class/" style="font-size: 15px;">class</a> <a href="/tags/OOP/" style="font-size: 15px;">OOP</a> <a href="/tags/struct/" style="font-size: 15px;">struct</a> <a href="/tags/基础/" style="font-size: 15px;">基础</a> <a href="/tags/whois/" style="font-size: 15px;">whois</a> <a href="/tags/纳网/" style="font-size: 15px;">纳网</a> <a href="/tags/网络营销/" style="font-size: 15px;">网络营销</a> <a href="/tags/隐私/" style="font-size: 15px;">隐私</a> <a href="/tags/骗子/" style="font-size: 15px;">骗子</a> <a href="/tags/怀柔/" style="font-size: 15px;">怀柔</a> <a href="/tags/水长城/" style="font-size: 15px;">水长城</a> <a href="/tags/清明/" style="font-size: 15px;">清明</a> <a href="/tags/游记/" style="font-size: 15px;">游记</a> <a href="/tags/cpp/" style="font-size: 15px;">cpp</a> <a href="/tags/RVO/" style="font-size: 15px;">RVO</a> <a href="/tags/拷贝构造函数/" style="font-size: 15px;">拷贝构造函数</a> <a href="/tags/返回值优化/" style="font-size: 15px;">返回值优化</a> <a href="/tags/bug/" style="font-size: 15px;">bug</a> <a href="/tags/FPU/" style="font-size: 15px;">FPU</a> <a href="/tags/x64/" style="font-size: 15px;">x64</a> <a href="/tags/x86/" style="font-size: 15px;">x86</a> <a href="/tags/汇编/" style="font-size: 15px;">汇编</a> <a href="/tags/浮点乘法/" style="font-size: 15px;">浮点乘法</a> <a href="/tags/浮点数/" style="font-size: 15px;">浮点数</a> <a href="/tags/误差/" style="font-size: 15px;">误差</a> <a href="/tags/3次握手/" style="font-size: 15px;">3次握手</a> <a href="/tags/TCP-IP/" style="font-size: 15px;">TCP/IP</a> <a href="/tags/tcpdump/" style="font-size: 15px;">tcpdump</a> <a href="/tags/windump/" style="font-size: 15px;">windump</a> <a href="/tags/计算机网络/" style="font-size: 15px;">计算机网络</a> <a href="/tags/php图片水印/" style="font-size: 15px;">php图片水印</a> <a href="/tags/QQ空间/" style="font-size: 15px;">QQ空间</a> <a href="/tags/图片拼接/" style="font-size: 15px;">图片拼接</a> <a href="/tags/魔力日志/" style="font-size: 15px;">魔力日志</a> <a href="/tags/Android-4-2/" style="font-size: 15px;">Android 4.2</a> <a href="/tags/AutoSwitcher/" style="font-size: 15px;">AutoSwitcher</a> <a href="/tags/WRITE-SECURE-SETTINGS/" style="font-size: 15px;">WRITE_SECURE_SETTINGS</a> <a href="/tags/没有权限/" style="font-size: 15px;">没有权限</a> <a href="/tags/sqlite/" style="font-size: 15px;">sqlite</a> <a href="/tags/安全/" style="font-size: 15px;">安全</a> <a href="/tags/用户体验/" style="font-size: 15px;">用户体验</a> <a href="/tags/百度/" style="font-size: 15px;">百度</a> <a href="/tags/QT/" style="font-size: 15px;">QT</a> <a href="/tags/windows/" style="font-size: 15px;">windows</a> <a href="/tags/COM接口/" style="font-size: 15px;">COM接口</a> <a href="/tags/helloWorld/" style="font-size: 15px;">helloWorld</a> <a href="/tags/tlb文件/" style="font-size: 15px;">tlb文件</a> <a href="/tags/GPU/" style="font-size: 15px;">GPU</a> <a href="/tags/opengl/" style="font-size: 15px;">opengl</a> <a href="/tags/经验技巧/" style="font-size: 15px;">经验技巧</a> <a href="/tags/计算机图形学/" style="font-size: 15px;">计算机图形学</a> <a href="/tags/远程控制/" style="font-size: 15px;">远程控制</a> <a href="/tags/远程桌面/" style="font-size: 15px;">远程桌面</a> <a href="/tags/系统架构设计师/" style="font-size: 15px;">系统架构设计师</a> <a href="/tags/证书登记/" style="font-size: 15px;">证书登记</a> <a href="/tags/软件设计师/" style="font-size: 15px;">软件设计师</a> <a href="/tags/软考/" style="font-size: 15px;">软考</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/matlab/" style="font-size: 15px;">matlab</a></div></div><div class="widget"><div class="widget-title">最新文章</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/jquery-ajax-post-to-download-a-file/">jQuery Ajax请求下载文件资源</a></li><li class="post-list-item"><a class="post-list-link" href="/travel-to-northwest-of-China/">毕业旅行之大西北游</a></li><li class="post-list-item"><a class="post-list-link" href="/codecolorer-adapted-to-highlight/">将代码高亮插件codecolorer替换为highlight</a></li><li class="post-list-item"><a class="post-list-link" href="/binding-domain-to-plugin-of-mobile-theme/">给手机主题插件Wptouch绑定单独的域名</a></li><li class="post-list-item"><a class="post-list-link" href="/share-beamer-with-tsinghua-theme/">分享一个清华主题的beamer模版</a></li><li class="post-list-item"><a class="post-list-link" href="/install-vim-latex-suite-in-mac-osx//">Mac下安装使用vim插件latex-suite</a></li><li class="post-list-item"><a class="post-list-link" href="/travel-to-vietnam//">越南10日游记</a></li><li class="post-list-item"><a class="post-list-link" href="/summary-of-year-2014//">2014年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/android-airplanemode-auto-switcher-v2//">飞行模式助手</a></li><li class="post-list-item"><a class="post-list-link" href="/leetcode-summary//">leetcode总结</a></li></ul></div><div class="widget"><div class="widget-title">友情链接</div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><div id="footer">© <a href="/." rel="nofollow">tanglei's blog|唐磊的个人博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div><a id="rocket" href="#top" class="show"></a><script src="/js/jquery.min.js" type="text/javascript"></script>
+<script src="/js/totop.js" type="text/javascript"></script><script src="/js/fancybox.pack.js" type="text/javascript"></script>
+<script src="/js/jquery.fancybox.js" type="text/javascript"></script><link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css"></div></body></html>
