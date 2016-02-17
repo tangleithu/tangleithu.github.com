@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="中南大学|清华大学软件学院唐磊的博客,主攻软件工程,数据挖掘,这里记录了我的学习，生活和工作"><title>J2EE考点 | tanglei's blog|唐磊的个人博客</title><link rel="stylesheet" type="text/css" href="/css/normalize.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="/css/pure-min.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">J2EE考点</h1><a id="logo" href="/.">tanglei's blog|唐磊的个人博客</a><p class="description">记录我的学习、生活、工作。</p></div><div id="nav-menu"><a href="/." class="current"><i class="icon-home"> 首页</i></a><a href="/archives/"><i class="icon-archive"> 归档</i></a><a href="/blog/about.html"><i class="icon-about"> 关于</i></a><a href="/atom.xml"><i class="icon-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">J2EE考点</h1><div class="post-meta">2010-12-18 | <span class="categories">分类于<a href="/categories/JAVA/"> JAVA</a></span></div><span data-disqus-identifier="blog/classes_j2ee.html" class="disqus-comment-count"></span><div class="post-content"><p>1、 JAVA的环境配置</p>
+<p>a)         Java_HOME:  D:\jdk1.5.0</p>
+<p>b)        PATH:  D:\jdk1.5.0\bin;</p>
+<p>c)         CLASSPATH: .; D:\jdk1.5.0\lib\tools.jar; D:\jdk1.5.0\jre\lib\rt.jar;</p>
+<p>2、 JAVA常用的命令</p>
+<p>Java ,javac,javadoc</p>
+<p>3、 JAVA的特点</p>
+<p>简单，面向对象，健壮性，安全性，分布性，多线程</p>
+<p>跨平台</p>
+<p>4、 JAVA类型转换顺序，方法(略)</p>
+<p>5、 JAVA关键字</p>
+<p>基本数据类型</p>
+<p>a)         <strong>byte</strong></p>
+<p>b)        <strong>short</strong></p>
+<p>c)         <strong>int</strong></p>
+<p>d)        <strong>long</strong></p>
+<p>e)         <strong>float</strong></p>
+<p>f)          <strong>double</strong></p>
+<p>g)        <strong>char</strong></p>
+<p>h)        <strong>boolean</strong></p>
+<p>循环关键字</p>
+<p>i)           <strong>do</strong></p>
+<p>j)           <strong>while</strong></p>
+<p>k)         <strong>for</strong></p>
+<p>l)           <strong>break</strong></p>
+<p>m)      <strong>continue</strong></p>
+<p><strong>包相关关键字</strong></p>
+<p> <strong>package</strong></p>
+<p> <strong>import</strong></p>
+<p>6、 JAVA类，对象，多态，继承，封装，构造方法，异常，方法重载，静态成员，Import</p>
+<p>7、 JAVA常见异常</p>
+<p>8、 Eclipse配置文件，LIB位置，.class文件用途，.project文件用途,打包JAR</p>
+<p>9、 JAVA接口与实现类（代码题） 抽象类，接口注意事项，，数据类型定义,this</p>
+<p>10、             Final的三个用处：如果将某个变量修饰为final，那么该变量就成为常量，如果将某个成员方法修饰为final，则意味着该方法不能被子类覆盖，如果将某个类修饰为final，则说明该类无法被继承</p>
+<p>11、             J2EE的13种技术和简介</p>
+<p>JNDI，EJB，RMI ，Java IDL/CORBA ，JMS，JTA，JTS ，JavaMail，JAF</p>
+<p>JDBC， XML， JSP，Java Servlet</p>
+<p>12、             JAVA分层结构</p>
+<p>a)         运行在客户端机器上的客户层组件</p>
+<p>b)        运行在J2EE服务器上的Web层组件</p>
+<p>c)         运行在J2EE服务器上的业务逻辑层组件</p>
+<p>d)        运行在EIS服务器上的企业信息系统层软件</p>
+<p>13、             JAVA服务模型</p>
+<p>a)         安全(Security)模型</p>
+<p>b)        事务管理（Transaction Management）模型</p>
+<p>c)         远程连接（Remote Client Connectivity）模型</p>
+<p>d)        生存周期管理（Life Cycle Management）模型</p>
+<p>e)         数据库连接池（Database Connection Pooling）模型</p>
+<p>14、             版本控制基本操作</p>
+<p>a)         提交:commit，check in</p>
+<p>b)        检出:check out</p>
+<p>c)         更新:update</p>
+<p>d)        合并:merge</p>
+<p>e)         显示历史：show history</p>
+<p>15、             调试操作</p>
+<p>a)         打断点</p>
+<p>b)        查看变量，语句执行情况</p>
+<p>c)         操作上有单步执行，进入方法等</p>
+<p>16、             Tomcat目录结构</p>
+<p>Bin: <span style="text-decoration: underline;"></span><span style="text-decoration: underline;">存放平台上启动和关闭的脚本文件</span></p>
+<p>Conf: 存放配置文件</p>
+<p>Lib: 存放服务器所需的各种JAR文件</p>
+<p>Logs:日志文件</p>
+<p>Temp：临时文件</p>
+<p>Webapps:Web项目发布目录</p>
+<p>Work:将JSP装换为JAVA SERVLET</p>
+<p>17、             Servlet运行简介（图）及生命周期</p>
+<p>18、             Servlet/JSP规范与Tomcat版本</p>
+<p>3.0/2.2____ 7.0.0</p>
+<p>2.5/2.1____ 6.0.18</p>
+<p>2.4/2.0____ 5.5.25</p>
+<p>2.3/1.2____ 4.1.36</p>
+<p>2.2/1.1____ 3.3.2 <a href="file:///R:/j2ee-beta3.doc#_msocom_1" target="_blank" rel="external">[tl3shi1]</a></p>
+<p>19、             常用端口</p>
+<p>Tomcat:8080</p>
+<p>Oracle:1521(这个是对的么？)——对 还有SQLSERVER?1433  Mysql？3306</p>
+<p>JBoss:8080</p>
+<p>SQLServer:1433</p>
+<p>20、             常见服务端，数据库，版本控制软件\</p>
+<p>服务端</p>
+<p>Tomcat(严谨的说是jsp服务器)  Weblogic  Jboss   Apache  Webspere</p>
+<p>数据库</p>
+<p>SqlServer ,Oracle,DB2,MySQL</p>
+<p>版本控制软件</p>
+<p>CVS(Concurrent Versions System) \ VS \ Clearcase</p>
+<p>Svn</p>
+<p>git</p>
+<p>21、             JDBC常用接口</p>
+<p>a)         Connection</p>
+<p>b)        Driver</p>
+<p>c)         Statement</p>
+<p>d)        PreparedStatement</p>
+<p>e)         CallableStatement</p>
+<p>f)          ResultSet</p>
+<p>22、             事务的三个方法</p>
+<p>a)         conn.setAutoCommit(<strong>false</strong>);</p>
+<p>b)        conn.commit()</p>
+<p>c)         conn.rollback()</p>
+<p>23、             事务的特性</p>
+<p><strong>原子性（atomicity**</strong>）<strong> </strong>一致性（consistency<strong>**）</strong> <strong>隔离性（isolation**</strong>）<strong> </strong>持久性（durability<strong>**）</strong></p>
+<p>24、             JDBC基本步骤</p>
+<p>加载驱动</p>
+<p>获得连接</p>
+<p>获得语句对象</p>
+<p>获得结果集</p>
+<p>遍历结果集</p>
+<p>关闭数据库有关对象</p>
+<p>25、             JNDI相关知识 //这个也考啊？</p>
+<p>26、             XML相关知识[用途，结构，语法规则，命名规范]</p>
+<p>27、             DOM4J实例程序</p>
+<p>28、             servlet运行体系简介</p>
+<p>29、             request结构</p>
+<p>³          路径：IP，端口，目录</p>
+<p>³      会话：会话id，生成时间，属性</p>
+<p>³      协议：</p>
+<p>³      编码：</p>
+<p>³      参数：参数，参数Map</p>
+<p>30、             response</p>
+<p>31、             session应用：过滤器，监听器，控制器，验证码及其他简单显示功能</p>
+<p>32、             JSP构成元素</p>
+<p>³      网页代码</p>
+<p>³      指令元素</p>
+<p>³      脚本元素</p>
+<p>³      操作元素</p>
+<p>³      注释和模版数据</p>
+<p>33、             JSP作用域</p>
+<p>³          页面域：对象只对于其所在页面是可访问的</p>
+<p>³      请求域：在请求的生命周期内有效</p>
+<p>³      会话域：会话的对象对于参与某客户端会话的所有组件有效</p>
+<p>³      应用域：应用域的对象在整个应用的生命周期都有效</p>
+<p>34、             EL表达式,C标签使用</p>
+<p>35、             Spring的组成</p>
+<p>36、             依赖注入方式</p>
+<p>n           接口注入</p>
+<p>n       构造方法注入</p>
+<p>n       设置属性注入</p>
+<p>37、             事务管理方式</p>
+<p>n           编程式事务</p>
+<p>n       声明式事务</p>
+<p>38、             EJB三种bean，状态</p>
+<p>n           会话Bean（Session Bean）</p>
+<p>分为有状态和无状态两种</p>
+<p>n       实体Bean（Entity Bean）</p>
+<p>n       消息驱动Bean（MessageDriven Bean）</p>
+<p>39、             JBOSS相关知识及目录结构 //这个也要考？</p>
+<p>a)         Bin：开始和停止JBoss的地方</p>
+<p>b)        Client：与JBoss通信所必须的客户端Java库(jar)</p>
+<p>c)         Docs：JBoss有关文档及XML类型定义文件</p>
+<p>d)        Lib：JBoss启动用到的Java库</p>
+<p>e)         Server：各种启动类型的服务器端EJB配置所需文件</p>
+<p>Server/ default下子目录结构(对4.2)</p>
+<p>a)         Conf:配置文件</p>
+<p>b)        Data：数据库文件。如内嵌的</p>
+<p>c)         Deploy：热部署目录</p>
+<p>d)        Lib：启动默认配置时需要加载的jar</p>
+<p>e)         Log：日志文件记录</p>
+<p>f)          Tmp：临时文件目录</p>
+<p>40、             WebServices的三标准：SOAP(Simple Object Access Protocol),WSDL(Web Services   Description ),UDDL(Universal Discovery、Description、Integration)</p>
+<p>41、             XMLHttpRequest 六种方法，6种属性</p>
+<p>n           abort()</p>
+<p>n       停止当前请求</p>
+<p>n       getAllResponseHeaders()</p>
+<p>n       把HTTP请求的所有响应首部作为键/值对返回</p>
+<p>n       getResponseHeader(&#8220;header&#8221;)</p>
+<p>n       返回指定首部的串值</p>
+<p>n       send(content)</p>
+<p>n       向服务器发送请求</p>
+<p>n       setRequestHeader(&#8220;header&#8221;, &#8220;value&#8221;)</p>
+<p>n       把指定首部设置为所提供的值。在设置任何首部之前必须先调用open()</p>
+<p>n       open(&#8220;method&#8221;, &#8220;url&#8221;)</p>
+<p>n       建立对服务器的调用。</p>
+<p>n       method参数可以是GET、POST或PUT。</p>
+<p>n       url参数可以是相对URL或绝对URL。</p>
+<p>n       这个方法还包括3个可选的参数</p>
+<p>——————————————————————————————————</p>
+<p>n       Onreadystatechange</p>
+<p>n       每个状态改变时都会触发这个事件处理器，通常会调用一个JavaScript函数</p>
+<p>n       responseText</p>
+<p>n       服务器的响应，表示为一个串</p>
+<p>n       readyState 请求的状态。</p>
+<p>n       有5个可取值：</p>
+<p>n       0 = 未初始化</p>
+<p>n       1 = 正在加载</p>
+<p>n       2 = 已加载</p>
+<p>n       3 = 交互中</p>
+<p>n       4 = 完成</p>
+<p>n       responseXML</p>
+<p>n       服务器的响应，表示为XML</p>
+<p>n       这个对象可以解析为一个DOM对象</p>
+<p>n       statusText</p>
+<p>n       HTTP状态码的相应文本（OK或Not Found（未找到）等等）</p>
+<p>n       Status</p>
+<p>n       服务器的HTTP状态码</p>
+<p>200对应OK</p>
+<p>404对应Not Found</p>
+<p><hr size="1"><br>这个都考。狠！</p><p></p>
+</div><div class="tags"><a href="/tags/J2EE/">J2EE</a><a href="/tags/考点/">考点</a><a href="/tags/考试/">考试</a></div><div class="post-nav"><a href="/blog/google_my_source.html" class="pre"><i class="icon-previous">google收录本机搭建环境的web资源</i></a><a href="/blog/java_data.html" class="next">再看java数据类型<i class="icon-next"></i></a></div><div id="disqus_thread"><script>var disqus_shortname = 'hexo-tanglei';
+var disqus_identifier = 'blog/classes_j2ee.html';
+var disqus_title = 'J2EE考点';
+var disqus_url = 'http://www.tanglei.name/blog/classes_j2ee.html';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//hexo-tanglei.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="sitesearch" value="http://www.tanglei.name"/></form></div><div class="widget"><div class="widget-title">分类</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux-amp-Ubuntu/">Linux&amp;Ubuntu</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MyLife/">MyLife</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SoftwareEngineering/">SoftwareEngineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows/">Windows</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/coding小工具/">coding小工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/wordpress/">wordpress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/业界动态/">业界动态</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/名人名事/">名人名事</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/实习那些事儿/">实习那些事儿</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作那些事儿/">工作那些事儿</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/开开眼界/">开开眼界</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/我不会算法/">我不会算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/我做站长/">我做站长</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库应用/">数据库应用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/敲敲代码/">敲敲代码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/清华大学/">清华大学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/玩玩手机/">玩玩手机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动领域/">移动领域</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/经验技巧/">经验技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络文摘/">网络文摘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机图形学/">计算机图形学</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/贵州支教行/">贵州支教行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件0804/">软件0804</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件体系结构/">软件体系结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件学院/">软件学院</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件工程/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件度量及其应用/">软件度量及其应用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件配置管理/">软件配置管理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件项目管理/">软件项目管理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软考/">软考</a></li></ul></div><div class="widget"><div class="widget-title">标签</div><div class="tagcloud"><a href="/tags/XAMPP/" style="font-size: 15px;">XAMPP</a> <a href="/tags/中南大学/" style="font-size: 15px;">中南大学</a> <a href="/tags/贵州支教/" style="font-size: 15px;">贵州支教</a> <a href="/tags/铜厂小学/" style="font-size: 15px;">铜厂小学</a> <a href="/tags/龙场镇/" style="font-size: 15px;">龙场镇</a> <a href="/tags/work/" style="font-size: 15px;">work</a> <a href="/tags/scala/" style="font-size: 15px;">scala</a> <a href="/tags/jquery/" style="font-size: 15px;">jquery</a> <a href="/tags/前端/" style="font-size: 15px;">前端</a> <a href="/tags/旅游/" style="font-size: 15px;">旅游</a> <a href="/tags/玩遍中国/" style="font-size: 15px;">玩遍中国</a> <a href="/tags/西北旅游/" style="font-size: 15px;">西北旅游</a> <a href="/tags/latex/" style="font-size: 15px;">latex</a> <a href="/tags/beamer/" style="font-size: 15px;">beamer</a> <a href="/tags/tsinghua/" style="font-size: 15px;">tsinghua</a> <a href="/tags/学位论文答辩/" style="font-size: 15px;">学位论文答辩</a> <a href="/tags/ppt-模版/" style="font-size: 15px;">ppt 模版</a> <a href="/tags/经验技巧/" style="font-size: 15px;">经验技巧</a> <a href="/tags/codecolorer/" style="font-size: 15px;">codecolorer</a> <a href="/tags/highlight/" style="font-size: 15px;">highlight</a> <a href="/tags/代码高亮/" style="font-size: 15px;">代码高亮</a> <a href="/tags/wordpress-plugin/" style="font-size: 15px;">wordpress plugin</a> <a href="/tags/wptouch/" style="font-size: 15px;">wptouch</a> <a href="/tags/latex-suite/" style="font-size: 15px;">latex-suite</a> <a href="/tags/mac-osx/" style="font-size: 15px;">mac osx</a> <a href="/tags/vim/" style="font-size: 15px;">vim</a> <a href="/tags/插件/" style="font-size: 15px;">插件</a> <a href="/tags/玩遍世界/" style="font-size: 15px;">玩遍世界</a> <a href="/tags/越南旅游/" style="font-size: 15px;">越南旅游</a> <a href="/tags/回忆录/" style="font-size: 15px;">回忆录</a> <a href="/tags/年终总结/" style="font-size: 15px;">年终总结</a> <a href="/tags/总结/" style="font-size: 15px;">总结</a> <a href="/tags/android/" style="font-size: 15px;">android</a> <a href="/tags/自动/" style="font-size: 15px;">自动</a> <a href="/tags/飞行模式/" style="font-size: 15px;">飞行模式</a> <a href="/tags/leetcode/" style="font-size: 15px;">leetcode</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/面试/" style="font-size: 15px;">面试</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/作弊/" style="font-size: 15px;">作弊</a> <a href="/tags/神经猫/" style="font-size: 15px;">神经猫</a> <a href="/tags/debug/" style="font-size: 15px;">debug</a> <a href="/tags/mac/" style="font-size: 15px;">mac</a> <a href="/tags/xcode/" style="font-size: 15px;">xcode</a> <a href="/tags/微软秋令营/" style="font-size: 15px;">微软秋令营</a> <a href="/tags/换行符/" style="font-size: 15px;">换行符</a> <a href="/tags/缓冲区/" style="font-size: 15px;">缓冲区</a> <a href="/tags/跨平台/" style="font-size: 15px;">跨平台</a> <a href="/tags/effective-c/" style="font-size: 15px;">effective c++</a> <a href="/tags/传参/" style="font-size: 15px;">传参</a> <a href="/tags/性能优化/" style="font-size: 15px;">性能优化</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/ipv6/" style="font-size: 15px;">ipv6</a> <a href="/tags/校园网/" style="font-size: 15px;">校园网</a> <a href="/tags/百度云管家/" style="font-size: 15px;">百度云管家</a> <a href="/tags/百度网盘/" style="font-size: 15px;">百度网盘</a> <a href="/tags/APACHE/" style="font-size: 15px;">APACHE</a> <a href="/tags/config/" style="font-size: 15px;">config</a> <a href="/tags/favicon-ico/" style="font-size: 15px;">favicon.ico</a> <a href="/tags/c/" style="font-size: 15px;">c++</a> <a href="/tags/class/" style="font-size: 15px;">class</a> <a href="/tags/OOP/" style="font-size: 15px;">OOP</a> <a href="/tags/struct/" style="font-size: 15px;">struct</a> <a href="/tags/基础/" style="font-size: 15px;">基础</a> <a href="/tags/whois/" style="font-size: 15px;">whois</a> <a href="/tags/纳网/" style="font-size: 15px;">纳网</a> <a href="/tags/网络营销/" style="font-size: 15px;">网络营销</a> <a href="/tags/隐私/" style="font-size: 15px;">隐私</a> <a href="/tags/骗子/" style="font-size: 15px;">骗子</a> <a href="/tags/怀柔/" style="font-size: 15px;">怀柔</a> <a href="/tags/水长城/" style="font-size: 15px;">水长城</a> <a href="/tags/清明/" style="font-size: 15px;">清明</a> <a href="/tags/游记/" style="font-size: 15px;">游记</a> <a href="/tags/cpp/" style="font-size: 15px;">cpp</a> <a href="/tags/RVO/" style="font-size: 15px;">RVO</a> <a href="/tags/拷贝构造函数/" style="font-size: 15px;">拷贝构造函数</a> <a href="/tags/返回值优化/" style="font-size: 15px;">返回值优化</a> <a href="/tags/bug/" style="font-size: 15px;">bug</a> <a href="/tags/FPU/" style="font-size: 15px;">FPU</a> <a href="/tags/x64/" style="font-size: 15px;">x64</a> <a href="/tags/x86/" style="font-size: 15px;">x86</a> <a href="/tags/汇编/" style="font-size: 15px;">汇编</a> <a href="/tags/浮点乘法/" style="font-size: 15px;">浮点乘法</a> <a href="/tags/浮点数/" style="font-size: 15px;">浮点数</a> <a href="/tags/误差/" style="font-size: 15px;">误差</a> <a href="/tags/3次握手/" style="font-size: 15px;">3次握手</a> <a href="/tags/TCP-IP/" style="font-size: 15px;">TCP/IP</a> <a href="/tags/tcpdump/" style="font-size: 15px;">tcpdump</a> <a href="/tags/windump/" style="font-size: 15px;">windump</a> <a href="/tags/计算机网络/" style="font-size: 15px;">计算机网络</a> <a href="/tags/php图片水印/" style="font-size: 15px;">php图片水印</a> <a href="/tags/QQ空间/" style="font-size: 15px;">QQ空间</a> <a href="/tags/图片拼接/" style="font-size: 15px;">图片拼接</a> <a href="/tags/魔力日志/" style="font-size: 15px;">魔力日志</a> <a href="/tags/Android-4-2/" style="font-size: 15px;">Android 4.2</a> <a href="/tags/AutoSwitcher/" style="font-size: 15px;">AutoSwitcher</a> <a href="/tags/WRITE-SECURE-SETTINGS/" style="font-size: 15px;">WRITE_SECURE_SETTINGS</a> <a href="/tags/没有权限/" style="font-size: 15px;">没有权限</a> <a href="/tags/sqlite/" style="font-size: 15px;">sqlite</a></div></div><div class="widget"><div class="widget-title">最新文章</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/jquery-ajax-post-to-download-a-file.html">jQuery Ajax请求下载文件资源</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/travel-to-northwest-of-China.html">毕业旅行之大西北游</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/codecolorer-adapted-to-highlight.html">将代码高亮插件codecolorer替换为highlight</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/binding-domain-to-plugin-of-mobile-theme.html">给手机主题插件Wptouch绑定单独的域名</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/share-beamer-with-tsinghua-theme.html">分享一个清华主题的beamer模版</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/install-vim-latex-suite-in-mac-osx.html">Mac下安装使用vim插件latex-suite</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/travel-to-vietnam.html">越南10日游记</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/summary-of-year-2014.html">2014年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/android-airplanemode-auto-switcher-v2.html">飞行模式助手</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/leetcode-summary.html">leetcode总结</a></li></ul></div><div class="widget"><div class="widget-title">最近评论</div><script type="text/javascript" src="//hexo-tanglei.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title">友情链接</div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><div id="footer">© <a href="/." rel="nofollow">tanglei's blog|唐磊的个人博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/jquery.min.js?v=0.0.0"></script><script type="text/javascript" src="/js/totop.js?v=0.0.0"></script><script type="text/javascript" src="/js/fancybox.pack.js?v=0.0.0"></script><script type="text/javascript" src="/js/jquery.fancybox.js?v=0.0.0"></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
